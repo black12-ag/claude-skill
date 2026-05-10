@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Skill Pack — Every Skill. One Command.</title>
+  <meta name="description" content="Install 17 plugins, 128 agent skills, and 52 custom Claude Code skills in one command.">
+  <meta property="og:title" content="Claude Skill Pack — Every Skill. One Command.">
+  <meta property="og:description" content="Install 17 plugins, 128 agent skills, and 52 custom Claude Code skills in one command.">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#08080f; --bg-deep:#04040a; --surface:#0f0f1a; --surface-warm:#141420;
+      --ink:#eeeef8; --ink-soft:#9898b8; --ink-mute:#55556a; --line:#1c1c2e;
+      --accent:#7c3aed; --accent-2:#a855f7; --accent-soft:rgba(124,58,237,.12);
+      --green:#10b981;
+      --shadow-2:0 4px 16px rgba(0,0,0,.5); --shadow-accent:0 8px 32px rgba(124,58,237,.25);
+      --radius:12px; --radius-lg:20px;
+      --font-body:'Geist','SF Pro Display',system-ui,-apple-system,sans-serif;
+      --font-mono:'JetBrains Mono','SF Mono',monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    button{font-family:inherit;cursor:pointer;border:none}
+
+    @keyframes enter{from{opacity:0;transform:translateY(12px);filter:blur(4px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+    @keyframes pulse-ring{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.35);opacity:0}}
+    [data-anim]{opacity:0;transform:translateY(12px);filter:blur(4px);transition:opacity .55s cubic-bezier(.2,.8,.2,1),transform .55s cubic-bezier(.2,.8,.2,1),filter .55s cubic-bezier(.2,.8,.2,1)}
+    [data-anim].visible{opacity:1;transform:translateY(0);filter:blur(0)}
+    @media(prefers-reduced-motion:reduce){[data-anim],[data-anim].visible{opacity:1;transform:none;filter:none;transition:none}}
+
+    /* Nav */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:60px;background:rgba(8,8,15,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
+    .nav-logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:.95rem;letter-spacing:-.01em}
+    .nav-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);position:relative}
+    .nav-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--accent);animation:pulse-ring 2s cubic-bezier(.2,.8,.2,1) infinite}
+    .nav-links{display:flex;align-items:center;gap:8px}
+    .nav-a{padding:6px 14px;border-radius:8px;font-size:.85rem;color:var(--ink-soft);transition:color .2s,background .2s}
+    .nav-a:hover{color:var(--ink);background:var(--surface)}
+    .nav-btn{padding:7px 16px;border-radius:8px;font-size:.85rem;font-weight:500;background:var(--accent);color:#fff;transition:background .2s,transform .2s,box-shadow .2s;display:inline-block}
+    .nav-btn:hover{background:var(--accent-2);transform:translateY(-1px);box-shadow:var(--shadow-accent)}
+
+    /* Hero */
+    .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden}
+    .hero-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(124,58,237,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,.04) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black,transparent)}
+    .hero-glow{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:600px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(124,58,237,.12) 0%,transparent 70%);pointer-events:none}
+    .hero-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:100px;border:1px solid rgba(124,58,237,.35);background:var(--accent-soft);font-size:.8rem;font-family:var(--font-mono);color:var(--accent-2);margin-bottom:28px;animation:enter .5s cubic-bezier(.2,.8,.2,1) both}
+    .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:block}
+    .hero-title{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:700;letter-spacing:-.04em;line-height:1.05;color:var(--ink);max-width:760px;margin-bottom:20px;animation:enter .55s .08s cubic-bezier(.2,.8,.2,1) both}
+    .hero-title em{font-style:normal;color:var(--ink-soft)}
+    .hero-sub{font-size:1.1rem;color:var(--ink-soft);max-width:520px;margin:0 auto 44px;animation:enter .55s .14s cubic-bezier(.2,.8,.2,1) both}
+    .install-box{display:flex;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;gap:14px;max-width:720px;width:100%;animation:enter .55s .2s cubic-bezier(.2,.8,.2,1) both;transition:border-color .3s,box-shadow .3s}
+    .install-box:hover{border-color:rgba(124,58,237,.4);box-shadow:0 0 0 3px var(--accent-soft)}
+    .install-prompt{font-family:var(--font-mono);font-size:.8rem;color:var(--accent-2);user-select:none;flex-shrink:0}
+    .install-cmd{font-family:var(--font-mono);font-size:.8rem;color:var(--ink);flex:1;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .copy-btn{flex-shrink:0;padding:6px 14px;border-radius:7px;background:var(--accent);color:#fff;font-size:.78rem;font-weight:500;font-family:var(--font-mono);transition:background .2s,transform .15s}
+    .copy-btn:hover{background:var(--accent-2);transform:translateY(-1px)}
+    .copy-btn.copied{background:var(--green)}
+    .hero-note{font-size:.78rem;color:var(--ink-mute);margin-top:14px;font-family:var(--font-mono);animation:enter .55s .26s cubic-bezier(.2,.8,.2,1) both}
+    .hero-stats{display:flex;gap:44px;margin-top:60px;animation:enter .55s .32s cubic-bezier(.2,.8,.2,1) both;flex-wrap:wrap;justify-content:center}
+    .stat{text-align:center}
+    .stat-num{display:block;font-size:2rem;font-weight:700;letter-spacing:-.04em;color:var(--ink)}
+    .stat-label{font-size:.78rem;color:var(--ink-mute);font-family:var(--font-mono)}
+
+    /* Sections */
+    section{padding:100px 5%}
+    .container{max-width:1100px;margin:0 auto}
+    .section-label{font-family:var(--font-mono);font-size:.75rem;color:var(--accent-2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+    .section-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;letter-spacing:-.03em;color:var(--ink);margin-bottom:16px}
+    .section-sub{font-size:1rem;color:var(--ink-soft);max-width:520px}
+
+    /* Steps */
+    .steps{background:var(--bg-deep);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+    .step{background:var(--surface);padding:40px 36px;transition:background .25s}
+    .step:hover{background:var(--surface-warm)}
+    .step-num{font-family:var(--font-mono);font-size:.72rem;color:var(--accent-2);letter-spacing:.08em;margin-bottom:20px;display:block}
+    .step-icon{width:40px;height:40px;border-radius:10px;background:var(--accent-soft);border:1px solid rgba(124,58,237,.2);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+    .step-title{font-size:1.1rem;font-weight:600;letter-spacing:-.02em;margin-bottom:10px}
+    .step-desc{font-size:.9rem;color:var(--ink-soft);line-height:1.65}
+    .step-code{margin-top:16px;padding:10px 14px;border-radius:8px;background:var(--bg-deep);border:1px solid var(--line);font-family:var(--font-mono);font-size:.74rem;color:var(--accent-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    /* Skills browser */
+    .skills-tabs{display:flex;gap:4px;flex-wrap:wrap;margin:40px 0 32px}
+    .tab-btn{padding:7px 16px;border-radius:8px;font-size:.82rem;font-weight:500;color:var(--ink-soft);background:transparent;border:1px solid transparent;transition:all .2s}
+    .tab-btn:hover{color:var(--ink);background:var(--surface)}
+    .tab-btn.active{color:var(--accent-2);background:var(--accent-soft);border-color:rgba(124,58,237,.3)}
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px}
+    .skill-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .25s}
+    .skill-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-2);border-color:rgba(124,58,237,.25)}
+    .skill-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .skill-cmd{font-family:var(--font-mono);font-size:.73rem;color:var(--accent-2);padding:3px 8px;background:var(--accent-soft);border-radius:5px}
+    .skill-tag{font-size:.68rem;color:var(--ink-mute);font-family:var(--font-mono);padding:2px 6px;background:var(--bg-deep);border-radius:4px;border:1px solid var(--line)}
+    .skill-name{font-size:.92rem;font-weight:600;letter-spacing:-.01em;margin-bottom:6px}
+    .skill-desc{font-size:.8rem;color:var(--ink-soft);line-height:1.55}
+
+    /* Agent */
+    .agent-section{background:var(--bg-deep);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .agent-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:60px;align-items:start}
+    .agent-info p{font-size:.95rem;color:var(--ink-soft);margin-top:14px;line-height:1.7}
+    .agent-features{list-style:none;margin-top:28px;display:flex;flex-direction:column;gap:12px}
+    .agent-features li{display:flex;align-items:flex-start;gap:12px;font-size:.88rem;color:var(--ink-soft)}
+    .feat-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:7px;flex-shrink:0}
+    .agent-chat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+    .chat-hdr{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+    .chat-av{width:30px;height:30px;border-radius:50%;background:var(--accent-soft);border:1px solid rgba(124,58,237,.3);display:flex;align-items:center;justify-content:center;font-size:.85rem}
+    .chat-name{font-size:.88rem;font-weight:600}
+    .chat-status{font-size:.72rem;color:var(--green);font-family:var(--font-mono)}
+    .chat-msgs{padding:20px;min-height:280px;display:flex;flex-direction:column;gap:14px;max-height:340px;overflow-y:auto}
+    .chat-msgs::-webkit-scrollbar{width:4px}
+    .chat-msgs::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px}
+    .msg-row{display:flex;gap:10px;align-items:flex-start;animation:enter .3s cubic-bezier(.2,.8,.2,1) both}
+    .msg-row.user-row{flex-direction:row-reverse}
+    .msg-av{width:26px;height:26px;border-radius:50%;background:var(--accent-soft);border:1px solid rgba(124,58,237,.3);display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;margin-top:2px}
+    .msg-av.u{background:var(--surface-warm);border-color:var(--line)}
+    .msg-bubble{background:var(--surface-warm);border:1px solid var(--line);border-radius:0 10px 10px 10px;padding:10px 14px;font-size:.84rem;line-height:1.6;max-width:85%}
+    .user-row .msg-bubble{border-radius:10px 0 10px 10px;background:var(--accent-soft);border-color:rgba(124,58,237,.2)}
+    .skill-pill{display:inline-block;margin:3px 3px 0 0;padding:2px 9px;border-radius:5px;background:var(--accent-soft);border:1px solid rgba(124,58,237,.25);font-family:var(--font-mono);font-size:.72rem;color:var(--accent-2)}
+    .chat-input-wrap{padding:14px 16px;border-top:1px solid var(--line);display:flex;gap:10px}
+    .chat-input{flex:1;background:var(--bg-deep);border:1px solid var(--line);border-radius:8px;padding:9px 14px;color:var(--ink);font-size:.85rem;font-family:inherit;outline:none;transition:border-color .2s}
+    .chat-input::placeholder{color:var(--ink-mute)}
+    .chat-input:focus{border-color:rgba(124,58,237,.4)}
+    .chat-send{padding:9px 16px;border-radius:8px;background:var(--accent);color:#fff;font-size:.82rem;font-weight:500;transition:background .2s,transform .15s}
+    .chat-send:hover{background:var(--accent-2);transform:translateY(-1px)}
+
+    /* Plugins */
+    .plugins-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px;margin-top:40px}
+    .plugin-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .25s}
+    .plugin-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-2);border-color:rgba(124,58,237,.2)}
+    .plugin-prefix{font-family:var(--font-mono);font-size:.72rem;color:var(--accent-2);margin-bottom:8px;display:block}
+    .plugin-name{font-size:.9rem;font-weight:600;margin-bottom:6px}
+    .plugin-from{font-size:.72rem;color:var(--ink-mute);font-family:var(--font-mono)}
+
+    /* CTA */
+    .cta-section{background:var(--bg-deep);border-top:1px solid var(--line);text-align:center;padding:100px 5%}
+    .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:40px}
+    .cta-primary{padding:13px 28px;border-radius:var(--radius);background:var(--accent);color:#fff;font-size:.95rem;font-weight:600;transition:background .2s,transform .2s,box-shadow .2s;display:inline-block}
+    .cta-primary:hover{background:var(--accent-2);transform:translateY(-2px);box-shadow:var(--shadow-accent)}
+    .cta-secondary{padding:13px 28px;border-radius:var(--radius);background:transparent;color:var(--ink);font-size:.95rem;font-weight:500;border:1px solid var(--line);transition:border-color .2s,background .2s,transform .2s;display:inline-block}
+    .cta-secondary:hover{border-color:rgba(124,58,237,.4);background:var(--accent-soft);transform:translateY(-2px)}
+
+    /* Footer */
+    footer{background:var(--bg-deep);border-top:1px solid var(--line);padding:48px 5% 32px}
+    .footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
+    .footer-logo{font-weight:600;font-size:.9rem}
+    .footer-copy{font-size:.78rem;color:var(--ink-mute);margin-top:6px}
+    .footer-links{display:flex;gap:20px;flex-wrap:wrap}
+    .footer-a{font-size:.82rem;color:var(--ink-mute);transition:color .2s}
+    .footer-a:hover{color:var(--ink)}
+    .social-btn{width:36px;height:36px;border-radius:9px;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:background .2s,color .2s,transform .2s}
+    .social-btn:hover{background:var(--surface-warm);color:var(--ink);transform:translateY(-2px)}
+    .footer-right{display:flex;gap:8px}
+
+    @media(max-width:768px){
+      .steps-grid{grid-template-columns:1fr}
+      .agent-wrap{grid-template-columns:1fr;gap:40px}
+      .nav-a{display:none}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-dot"></div>
+    Claude Skill Pack
+  </div>
+  <div class="nav-links">
+    <a href="#skills" class="nav-a">Skills</a>
+    <a href="#agent" class="nav-a">Agent</a>
+    <a href="#plugins" class="nav-a">Plugins</a>
+    <a href="https://github.com/black12-ag/claude-skill" class="nav-a" target="_blank" rel="noopener">GitHub</a>
+    <a href="#install" class="nav-btn">Install</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="install">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-badge"><span class="badge-dot"></span>v1.0 &mdash; 17 plugins &bull; 128 skills &bull; 1 command</div>
+  <h1 class="hero-title">Every Claude Code skill.<br><em>One command.</em></h1>
+  <p class="hero-sub">Install 17 plugins, 128 agent skills, and 52 custom skills on any Mac in under 30 seconds.</p>
+  <div class="install-box">
+    <span class="install-prompt">$</span>
+    <code class="install-cmd" id="cmd-text">curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</code>
+    <button class="copy-btn" id="copy-btn" onclick="copyCmd()">Copy</button>
+  </div>
+  <p class="hero-note">macOS &bull; Requires Claude Code + Node.js</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">17</span><span class="stat-label">Plugins</span></div>
+    <div class="stat"><span class="stat-num">128</span><span class="stat-label">Agent Skills</span></div>
+    <div class="stat"><span class="stat-num">52</span><span class="stat-label">Custom Skills</span></div>
+    <div class="stat"><span class="stat-num">7</span><span class="stat-label">Marketplaces</span></div>
+  </div>
+</section>
+
+<!-- Steps -->
+<section class="steps">
+  <div class="container">
+    <p data-anim class="section-label">How it works</p>
+    <h2 data-anim class="section-title">Up and running in 3 steps</h2>
+    <br><br>
+    <div class="steps-grid">
+      <div class="step" data-anim>
+        <span class="step-num">01 &mdash; INSTALL</span>
+        <div class="step-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+        <div class="step-title">Run the installer</div>
+        <p class="step-desc">One curl command clones the repo and runs the full install script. All 17 plugins and 7 marketplaces set up automatically.</p>
+        <div class="step-code">curl -fsSL .../bootstrap.sh | bash</div>
+      </div>
+      <div class="step" data-anim>
+        <span class="step-num">02 &mdash; LOGIN</span>
+        <div class="step-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        </div>
+        <div class="step-title">Log in to Claude</div>
+        <p class="step-desc">A browser opens automatically. Sign in with your Anthropic account. The script waits and continues when you are done.</p>
+        <div class="step-code">claude login  ← auto-triggered</div>
+      </div>
+      <div class="step" data-anim>
+        <span class="step-num">03 &mdash; USE</span>
+        <div class="step-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="step-title">Start using skills</div>
+        <p class="step-desc">Restart Claude Code. Type / to see every command or /auto to let Claude pick the best skill for your task automatically.</p>
+        <div class="step-code">/auto build me a landing page</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Skills Browser -->
+<section id="skills" style="background:var(--bg)">
+  <div class="container">
+    <p data-anim class="section-label">Skills Browser</p>
+    <h2 data-anim class="section-title">Browse every skill</h2>
+    <p data-anim class="section-sub">Every installed skill with the exact command to invoke it in Claude Code.</p>
+    <div class="skills-tabs" data-anim>
+      <button class="tab-btn active" onclick="filterSkills('all',this)">All</button>
+      <button class="tab-btn" onclick="filterSkills('design',this)">Design &amp; UI</button>
+      <button class="tab-btn" onclick="filterSkills('code',this)">Code &amp; Build</button>
+      <button class="tab-btn" onclick="filterSkills('seo',this)">SEO</button>
+      <button class="tab-btn" onclick="filterSkills('review',this)">Review &amp; QA</button>
+      <button class="tab-btn" onclick="filterSkills('agent',this)">Agents</button>
+      <button class="tab-btn" onclick="filterSkills('deploy',this)">Deploy</button>
+      <button class="tab-btn" onclick="filterSkills('memory',this)">Memory</button>
+    </div>
+    <div class="skills-grid" id="skills-grid"></div>
+  </div>
+</section>
+
+<!-- Sub-Agent -->
+<section class="agent-section" id="agent">
+  <div class="container">
+    <div class="agent-wrap">
+      <div class="agent-info">
+        <p data-anim class="section-label">Built-in Sub-Agent</p>
+        <h2 data-anim class="section-title">Find the right skill instantly</h2>
+        <p data-anim>Describe what you want to do. The skill agent returns the exact command to run &mdash; no guessing, no searching the README.</p>
+        <ul class="agent-features" data-anim>
+          <li><span class="feat-dot"></span>Knows all 180+ commands by heart</li>
+          <li><span class="feat-dot"></span>Returns exact invocation syntax &mdash; copy and paste ready</li>
+          <li><span class="feat-dot"></span>Covers plugins, prefixes, sub-commands, and shortcuts</li>
+          <li><span class="feat-dot"></span>Runs entirely in the browser &mdash; instant, no API needed</li>
+        </ul>
+      </div>
+      <div class="agent-chat" data-anim>
+        <div class="chat-hdr">
+          <div class="chat-av">S</div>
+          <div>
+            <div class="chat-name">Skill Agent</div>
+            <div class="chat-status">online</div>
+          </div>
+        </div>
+        <div class="chat-msgs" id="chat-msgs"></div>
+        <div class="chat-input-wrap">
+          <input class="chat-input" id="chat-input" type="text" placeholder="What do you want to do?" maxlength="200">
+          <button class="chat-send" onclick="sendMsg()">Ask</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Plugins -->
+<section id="plugins" style="background:var(--bg)">
+  <div class="container">
+    <p data-anim class="section-label">Installed Plugins</p>
+    <h2 data-anim class="section-title">17 plugins across 7 marketplaces</h2>
+    <p data-anim class="section-sub">Each plugin installs automatically. Use its prefix to invoke skills in Claude Code.</p>
+    <div class="plugins-grid" id="plugins-grid"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <p data-anim class="section-label">Get started</p>
+    <h2 data-anim class="section-title">Ready to install everything?</h2>
+    <p data-anim class="section-sub" style="margin:0 auto">One command. Every skill. Any Mac. Built by Munir.</p>
+    <div class="cta-btns" data-anim>
+      <a href="https://github.com/black12-ag/claude-skill" class="cta-primary" target="_blank" rel="noopener">View on GitHub</a>
+      <a href="https://portfolio.ethio-viral.com/" class="cta-secondary" target="_blank" rel="noopener">About the author</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Claude Skill Pack</div>
+      <div class="footer-copy">MIT License &mdash; Built by <a href="https://portfolio.ethio-viral.com/" style="color:var(--accent-2)" target="_blank" rel="noopener">Munir</a></div>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/black12-ag/claude-skill" class="footer-a" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/black12-ag/claude-skill/blob/main/README.md" class="footer-a" target="_blank" rel="noopener">Docs</a>
+      <a href="https://portfolio.ethio-viral.com/" class="footer-a" target="_blank" rel="noopener">Portfolio</a>
+      <a href="https://github.com/sponsors/black12-ag" class="footer-a" target="_blank" rel="noopener">Sponsor</a>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/black12-ag/claude-skill" class="social-btn" target="_blank" rel="noopener" title="GitHub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+      <a href="https://portfolio.ethio-viral.com/" class="social-btn" target="_blank" rel="noopener" title="Portfolio">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const CMD = 'curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash';
+
+const SKILLS = [
+  {cmd:'ts:taste-skill',name:'Taste Skill',desc:'Senior UI/UX taste enforcement — kills generic AI design.',cat:'design'},
+  {cmd:'ts:gpt-tasteskill',name:'GPT Taste',desc:'Elite UX/UI + GSAP motion engineering.',cat:'design'},
+  {cmd:'ts:minimalist-skill',name:'Minimalist',desc:'Warm monochrome, typographic contrast, editorial feel.',cat:'design'},
+  {cmd:'ts:brutalist-skill',name:'Brutalist',desc:'Swiss typography meets military terminal aesthetics.',cat:'design'},
+  {cmd:'ts:soft-skill',name:'Soft / Agency',desc:'High-end agency fonts, spacing, and design system rules.',cat:'design'},
+  {cmd:'ts:redesign-skill',name:'Redesign',desc:'Upgrade existing site to premium quality.',cat:'design'},
+  {cmd:'ts:image-to-code',name:'Image to Code',desc:'Convert a design screenshot into working code.',cat:'design'},
+  {cmd:'ts:imagegen-web',name:'Image Gen Web',desc:'Generate premium conversion-aware web UI images.',cat:'design'},
+  {cmd:'ts:imagegen-mobile',name:'Image Gen Mobile',desc:'Generate premium mobile app UI images.',cat:'design'},
+  {cmd:'ts:brandkit',name:'Brand Kit',desc:'Brand-kit boards, logo systems, identity decks.',cat:'design'},
+  {cmd:'/impeccable audit',name:'Impeccable Audit',desc:'Score UI against 23 design heuristics.',cat:'design'},
+  {cmd:'/impeccable polish',name:'Impeccable Polish',desc:'Micro-detail polish — spacing, alignment, typography.',cat:'design'},
+  {cmd:'/impeccable bolder',name:'Make Bolder',desc:'Make bland designs bold and striking.',cat:'design'},
+  {cmd:'/impeccable animate',name:'Add Animation',desc:'Add motion and micro-interactions to UI.',cat:'design'},
+  {cmd:'/impeccable colorize',name:'Colorize',desc:'Apply a strong, intentional color system.',cat:'design'},
+  {cmd:'/ui',name:'UI Generator',desc:'Generate a UI screen or component from text.',cat:'design'},
+  {cmd:'/dg',name:'Motion Audit',desc:'Motion & animation audit — Emil Kowalski style.',cat:'design'},
+  {cmd:'/canvas-design',name:'Canvas Design',desc:'Create posters, art, and visual designs as PNG/PDF.',cat:'design'},
+  {cmd:'/theme-factory',name:'Theme Factory',desc:'Apply visual themes to slides, docs, or HTML pages.',cat:'design'},
+  {cmd:'/build',name:'Build',desc:'Full-feature build shortcut. Describe and Claude builds it.',cat:'code'},
+  {cmd:'/stripe',name:'Stripe',desc:'Payments, checkout, subscriptions best practices.',cat:'code'},
+  {cmd:'/mcp-builder',name:'MCP Builder',desc:'Build MCP servers for any external API.',cat:'code'},
+  {cmd:'/remotion',name:'Remotion',desc:'Programmatic videos with React using Remotion.',cat:'code'},
+  {cmd:'/local-build',name:'Local Build',desc:'Build React Native APK + simulator without EAS.',cat:'code'},
+  {cmd:'/app-icon',name:'App Icon',desc:'App icons for React Native Expo with iOS 26 support.',cat:'code'},
+  {cmd:'/supabase',name:'Supabase',desc:'DB operations, schema, Row Level Security.',cat:'code'},
+  {cmd:'/firebase-basics',name:'Firebase',desc:'Firebase/Firestore setup and operations.',cat:'code'},
+  {cmd:'/context7',name:'Context7',desc:'Fetch live docs for any library — React, Next.js, etc.',cat:'code'},
+  {cmd:'/manim-video',name:'Manim Video',desc:'Mathematical animations using Manim.',cat:'code'},
+  {cmd:'/seo',name:'SEO Master',desc:'Full SEO toolkit — main entry point for all SEO work.',cat:'seo'},
+  {cmd:'/seo-audit',name:'SEO Audit',desc:'Full site SEO audit with actionable issues.',cat:'seo'},
+  {cmd:'/seo-technical',name:'Technical SEO',desc:'Core Web Vitals, crawlability, indexing.',cat:'seo'},
+  {cmd:'/seo-content',name:'Content SEO',desc:'Content optimization and keyword strategy.',cat:'seo'},
+  {cmd:'/seo-schema',name:'Schema / JSON-LD',desc:'Structured data markup generation.',cat:'seo'},
+  {cmd:'/seo-sitemap',name:'Sitemap',desc:'XML sitemap generation and validation.',cat:'seo'},
+  {cmd:'/seo-images',name:'Image SEO',desc:'Alt text, compression, next-gen formats.',cat:'seo'},
+  {cmd:'/seo-competitor-pages',name:'Competitor SEO',desc:'Analyze competitor pages for gaps and opportunities.',cat:'seo'},
+  {cmd:'/seo-programmatic',name:'Programmatic SEO',desc:'Generate thousands of SEO pages at scale.',cat:'seo'},
+  {cmd:'coderabbit:code-review',name:'CodeRabbit',desc:'AI-powered PR review with confidence scoring.',cat:'review'},
+  {cmd:'coderabbit:autofix',name:'CodeRabbit Autofix',desc:'Auto-apply review feedback with per-change approval.',cat:'review'},
+  {cmd:'/review',name:'Code Review',desc:'Full code review with actionable suggestions.',cat:'review'},
+  {cmd:'/qa',name:'QA',desc:'Quality assurance workflow — full test pass.',cat:'review'},
+  {cmd:'/qa-only',name:'QA Only',desc:'Run tests only — no code changes made.',cat:'review'},
+  {cmd:'/playwright-cli',name:'Playwright',desc:'Browser automation and Playwright tests.',cat:'review'},
+  {cmd:'/security-review',name:'Security Review',desc:'Full security audit — OWASP, vulnerabilities.',cat:'review'},
+  {cmd:'/health',name:'Health Check',desc:'Overall project health overview.',cat:'review'},
+  {cmd:'/benchmark',name:'Benchmark',desc:'Performance benchmarks and profiling.',cat:'review'},
+  {cmd:'/50',name:'Claude-Flow',desc:'Multi-agent swarm — 100+ specialized agents in parallel.',cat:'agent'},
+  {cmd:'superpowers:dispatching-parallel-agents',name:'Parallel Agents',desc:'Dispatch multiple Claude agents in parallel.',cat:'agent'},
+  {cmd:'/pair-agent',name:'Pair Agent',desc:'Pair programming with a second Claude agent.',cat:'agent'},
+  {cmd:'superpowers:systematic-debugging',name:'Systematic Debug',desc:'Step-by-step structured bug investigation.',cat:'agent'},
+  {cmd:'superpowers:test-driven-development',name:'TDD',desc:'Write failing tests first, then implement.',cat:'agent'},
+  {cmd:'/auto',name:'Auto Router',desc:'Smart skill picker — describe the task, Claude picks.',cat:'agent'},
+  {cmd:'superpowers:brainstorming',name:'Brainstorm',desc:'Structured exploration before writing any code.',cat:'agent'},
+  {cmd:'/ship',name:'Ship',desc:'End-to-end deploy workflow.',cat:'deploy'},
+  {cmd:'/land-and-deploy',name:'Land & Deploy',desc:'Land branch and deploy in one flow.',cat:'deploy'},
+  {cmd:'/canary',name:'Canary',desc:'Canary deployment strategy.',cat:'deploy'},
+  {cmd:'/guard',name:'Guard',desc:'Safety check before any risky action.',cat:'deploy'},
+  {cmd:'/freeze',name:'Freeze',desc:'Pause all Claude actions — nothing executes.',cat:'deploy'},
+  {cmd:'claude-mem:learn-codebase',name:'Learn Codebase',desc:'Deep-learn entire repo into persistent memory.',cat:'memory'},
+  {cmd:'claude-mem:mem-search',name:'Memory Search',desc:"Search Claude's persistent memory.",cat:'memory'},
+  {cmd:'claude-mem:timeline-report',name:'Timeline Report',desc:'Timeline of all project work in memory.',cat:'memory'},
+  {cmd:'claude-mem:smart-explore',name:'Smart Explore',desc:'Memory-backed codebase exploration.',cat:'memory'},
+  {cmd:'/context-save',name:'Context Save',desc:'Save current conversation context.',cat:'memory'},
+  {cmd:'/graphify',name:'Graphify',desc:'Build a knowledge graph from code and docs.',cat:'memory'},
+];
+
+const PLUGINS = [
+  {prefix:'superpowers:',name:'Superpowers',from:'claude-plugins-official'},
+  {prefix:'ts:',name:'Taste Skills',from:'taste-skills — 12 commands'},
+  {prefix:'impeccable',name:'Impeccable',from:'impeccable — 23 commands'},
+  {prefix:'50',name:'Claude-Flow / Ruflo',from:'ruflo — multi-agent swarm'},
+  {prefix:'claude-mem:',name:'Claude Mem',from:'thedotmack'},
+  {prefix:'coderabbit:',name:'CodeRabbit',from:'claude-plugins-official'},
+  {prefix:'context7:',name:'Context7',from:'claude-plugins-official'},
+  {prefix:'code-review:',name:'Code Review',from:'claude-plugins-official'},
+  {prefix:'frontend-design:',name:'Frontend Design',from:'claude-plugins-official'},
+  {prefix:'supabase:',name:'Supabase',from:'claude-plugins-official'},
+  {prefix:'plugin-dev:',name:'Plugin Dev',from:'claude-plugins-official'},
+  {prefix:'security-guidance:',name:'Security Guidance',from:'claude-plugins-official'},
+  {prefix:'playground:',name:'Playground',from:'claude-plugins-official'},
+  {prefix:'claude-code-setup:',name:'Claude Code Setup',from:'claude-plugins-official'},
+  {prefix:'swift-lsp:',name:'Swift LSP',from:'claude-plugins-official'},
+  {prefix:'Notion:',name:'Notion',from:'claude-plugins-official'},
+  {prefix:'superpowers:',name:'Superpowers Dev',from:'superpowers-dev (latest)'},
+];
+
+const AGENT_KB = [
+  {kw:['ui','component','button','modal','card','form','interface','screen','layout','design'],skills:['ts:taste-skill','/ui','/impeccable audit','ts:redesign-skill'],reply:'For UI and design work:'},
+  {kw:['review','pr','pull request','check code','code review','audit code'],skills:['coderabbit:code-review','/review','coderabbit:autofix'],reply:'For code review:'},
+  {kw:['debug','bug','error','fix','crash','broken','not working'],skills:['superpowers:systematic-debugging','/investigate','/health'],reply:'For debugging — use the structured approach:'},
+  {kw:['test','qa','testing','playwright','e2e','unit test'],skills:['superpowers:test-driven-development','/qa','/playwright-cli'],reply:'For testing:'},
+  {kw:['seo','search engine','meta tag','sitemap','ranking','traffic','google'],skills:['/seo','/seo-audit','/seo-technical','/seo-content'],reply:'For SEO work — start with an audit:'},
+  {kw:['deploy','ship','release','production','push live','go live'],skills:['/guard','/ship','/canary'],reply:'For deploying — always guard-check first:'},
+  {kw:['memory','remember','codebase','learn repo','forget'],skills:['claude-mem:learn-codebase','claude-mem:mem-search','/graphify'],reply:'For memory and codebase learning:'},
+  {kw:['agent','swarm','parallel','multiple tasks','multi agent','many'],skills:['/50','superpowers:dispatching-parallel-agents','/pair-agent'],reply:'For multi-agent parallel work:'},
+  {kw:['plan','architecture','design system','roadmap','spec','structure'],skills:['superpowers:writing-plans','/brainstorm'],reply:'For planning before coding:'},
+  {kw:['database','supabase','sql','postgres','firestore','firebase','db'],skills:['/supabase','/firebase-basics'],reply:'For database work:'},
+  {kw:['stripe','payment','checkout','subscription','billing','pay'],skills:['/stripe','/supabase'],reply:'For payment integration:'},
+  {kw:['brand','logo','identity','color','palette','typography'],skills:['ts:brandkit','/canvas-design','ts:soft-skill'],reply:'For branding:'},
+  {kw:['image','screenshot','photo','generate image','picture'],skills:['ts:imagegen-web','ts:image-to-code','/image-enhancer'],reply:'For images:'},
+  {kw:['resume','job','career','cv','interview','apply'],skills:['/career-ops','/tailored-resume-generator'],reply:'For career and job search:'},
+  {kw:['security','auth','permission','vulnerability','xss','injection','hack'],skills:['/security-review','/security-best-practices','/guard'],reply:'For security:'},
+  {kw:['animation','motion','transition','gsap','framer','animate'],skills:['/dg','ts:gpt-tasteskill','/remotion'],reply:'For animations and motion:'},
+  {kw:['document','pdf','word','excel','spreadsheet','presentation','slides'],skills:['/pdf','/docx','/xlsx','/pptx'],reply:'For documents:'},
+];
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderSkills(cat) {
+  const filtered = cat === 'all' ? SKILLS : SKILLS.filter(s => s.cat === cat);
+  const grid = document.getElementById('skills-grid');
+  grid.innerHTML = '';
+  filtered.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'skill-card';
+    const top = document.createElement('div');
+    top.className = 'skill-card-top';
+    const cmdSpan = document.createElement('span');
+    cmdSpan.className = 'skill-cmd';
+    cmdSpan.textContent = s.cmd;
+    const tagSpan = document.createElement('span');
+    tagSpan.className = 'skill-tag';
+    tagSpan.textContent = s.cat;
+    top.appendChild(cmdSpan);
+    top.appendChild(tagSpan);
+    const name = document.createElement('div');
+    name.className = 'skill-name';
+    name.textContent = s.name;
+    const desc = document.createElement('div');
+    desc.className = 'skill-desc';
+    desc.textContent = s.desc;
+    card.appendChild(top);
+    card.appendChild(name);
+    card.appendChild(desc);
+    grid.appendChild(card);
+  });
+}
+
+function filterSkills(cat, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSkills(cat);
+}
+
+function renderPlugins() {
+  const grid = document.getElementById('plugins-grid');
+  grid.innerHTML = '';
+  PLUGINS.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'plugin-card';
+    card.setAttribute('data-anim','');
+    const prefix = document.createElement('span');
+    prefix.className = 'plugin-prefix';
+    prefix.textContent = p.prefix;
+    const name = document.createElement('div');
+    name.className = 'plugin-name';
+    name.textContent = p.name;
+    const from = document.createElement('div');
+    from.className = 'plugin-from';
+    from.textContent = p.from;
+    card.appendChild(prefix);
+    card.appendChild(name);
+    card.appendChild(from);
+    grid.appendChild(card);
+  });
+}
+
+renderSkills('all');
+renderPlugins();
+
+// Agent chat — safe DOM building
+const chatMsgs = document.getElementById('chat-msgs');
+
+function buildMsg(who, lines) {
+  const row = document.createElement('div');
+  row.className = 'msg-row' + (who === 'user' ? ' user-row' : '');
+  const av = document.createElement('div');
+  av.className = 'msg-av' + (who === 'user' ? ' u' : '');
+  av.textContent = who === 'user' ? 'U' : 'S';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  lines.forEach(line => {
+    if (line.type === 'text') {
+      const p = document.createElement('p');
+      p.style.marginBottom = '4px';
+      p.textContent = line.content;
+      bubble.appendChild(p);
+    } else if (line.type === 'pills') {
+      const wrap = document.createElement('div');
+      wrap.style.marginTop = '8px';
+      line.items.forEach(item => {
+        const pill = document.createElement('span');
+        pill.className = 'skill-pill';
+        pill.textContent = item;
+        wrap.appendChild(pill);
+      });
+      bubble.appendChild(wrap);
+    } else if (line.type === 'small') {
+      const small = document.createElement('small');
+      small.style.color = 'var(--ink-mute)';
+      small.textContent = line.content;
+      bubble.appendChild(small);
+    }
+  });
+  row.appendChild(av);
+  row.appendChild(bubble);
+  return row;
+}
+
+function addBotMsg(lines) {
+  chatMsgs.appendChild(buildMsg('bot', lines));
+  chatMsgs.scrollTop = chatMsgs.scrollHeight;
+}
+
+function addUserMsg(text) {
+  chatMsgs.appendChild(buildMsg('user', [{type:'text', content: text}]));
+  chatMsgs.scrollTop = chatMsgs.scrollHeight;
+}
+
+// Initial greeting
+addBotMsg([
+  {type:'text', content:"Hi! Tell me what you want to do and I'll find the right skill. Try: \"review my code\", \"build a UI\", or \"debug a bug\"."}
+]);
+
+function findMatch(query) {
+  const q = query.toLowerCase();
+  for (const entry of AGENT_KB) {
+    if (entry.kw.some(k => q.includes(k))) return entry;
+  }
+  return null;
+}
+
+function sendMsg() {
+  const input = document.getElementById('chat-input');
+  const val = input.value.trim();
+  if (!val) return;
+  addUserMsg(val);
+  input.value = '';
+  setTimeout(() => {
+    const match = findMatch(val);
+    if (match) {
+      addBotMsg([
+        {type:'text', content: match.reply},
+        {type:'pills', items: match.skills},
+        {type:'small', content: 'Type these exact commands in Claude Code.'}
+      ]);
+    } else {
+      addBotMsg([
+        {type:'text', content: 'Try the auto router — it picks the best skill for any task:'},
+        {type:'pills', items: ['/auto ' + val.slice(0,40), '/menu']},
+        {type:'small', content: 'Or type /menu to browse all skills visually in Claude Code.'}
+      ]);
+    }
+  }, 320);
+}
+
+document.getElementById('chat-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendMsg();
+});
+
+function copyCmd() {
+  navigator.clipboard.writeText(CMD).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// Intersection observer
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const delay = parseInt(e.target.dataset.delay || '0');
+      setTimeout(() => e.target.classList.add('visible'), delay);
+      obs.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.12});
+
+document.querySelectorAll('[data-anim]').forEach((el, i) => {
+  el.dataset.delay = String(Math.min((i % 6) * 70, 280));
+  obs.observe(el);
+});
+</script>
+</body>
+</html>

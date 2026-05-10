@@ -1,5 +1,24 @@
+<div align="center">
+
 # Claude Code — Full Skill Setup
+
+**[Website](https://claude-skill.pages.dev)** &bull; **[GitHub](https://github.com/black12-ag/claude-skill)** &bull; **[Portfolio](https://portfolio.ethio-viral.com/)**
+
 > My personal Claude Code skill pack. One command installs everything on any new Mac.
+
+[![MIT License](https://img.shields.io/badge/license-MIT-7c3aed?style=flat-square)](./LICENSE)
+[![Plugins](https://img.shields.io/badge/plugins-17-a855f7?style=flat-square)](#-installed-plugins-17)
+[![Skills](https://img.shields.io/badge/skills-128%2B-7c3aed?style=flat-square)](#-every-slash-command--what-it-does)
+[![Website](https://img.shields.io/badge/website-live-10b981?style=flat-square)](https://claude-skill.pages.dev)
+
+</div>
+
+---
+
+> **Sponsor this project** — If this skill pack saves you time, consider supporting it:
+> **[Sponsor on GitHub](https://github.com/sponsors/black12-ag)** &bull; Built by **[Munir](https://portfolio.ethio-viral.com/)** — Full-stack developer & Claude Code power user.
+
+---
 
 ## ⚡ Install on a New Mac (one command)
 
