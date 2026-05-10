@@ -7,286 +7,328 @@
 curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash
 ```
 
-This will automatically:
-1. Install Claude Code (if missing)
-2. Log you into your Anthropic account
-3. Add all 7 marketplaces
-4. Install all 17 plugins
-5. Copy all 128 agent skills + 52 custom skills
-6. Set up your global `~/CLAUDE.md` instructions
-7. Apply settings template
+---
+
+## 🔑 Plugin Prefixes — What `ts:`, `50`, `dg`, `impeccable` Mean
+
+Each plugin has a **name prefix**. When you invoke a skill from that plugin, you use `pluginName:skillName`.
+
+| Prefix | Plugin | What it is |
+|--------|--------|-----------|
+| `ts:` | taste-skills | Design taste, image gen, redesign, branding |
+| `50` | ruflo (claude-flow) | Multi-agent swarm with 100+ specialized agents |
+| `impeccable` | impeccable | UI/UX audit with 23 sub-commands |
+| `superpowers:` | superpowers | TDD, debugging, planning, collaboration |
+| `coderabbit:` | coderabbit | AI-powered code review |
+| `claude-mem:` | thedotmack | Persistent memory across sessions |
+| `code-review:` | code-review | Multi-agent PR review |
+| `plugin-dev:` | plugin-dev | Build Claude plugins |
 
 ---
 
-## 🎮 Every Slash Command & What It Does
+## 🎮 Every Skill & Command — Exact Syntax + Purpose
 
-Type `/` in Claude Code to see all commands. Here is every single one:
-
-### 🚀 Quick Shortcuts (type exactly these)
+### `ts:` Plugin (Taste Skills — Design & Image)
+> Type `ts:skillname` to invoke
 
 | Command | Purpose |
 |---------|---------|
-| `/auto <task>` | Smart skill router — describes your task, picks the best skills automatically |
-| `/seo` | Activate full SEO toolkit (audit, content, schema, sitemap, images) |
-| `/build <feature>` | Quick full-feature build shortcut — describe what to build |
-| `/ui <description>` | Generate a UI screen or component from a text description |
-| `/tv <symbol>` | TradingView analysis for any stock or crypto symbol |
-| `/menu` | Show a visual menu of ALL installed skills grouped by category |
-| `/50` | Launch multi-agent Claude-Flow swarm for complex parallel tasks |
-| `/graphify` | Build or update a knowledge graph for the current project |
+| `ts:taste-skill` | Senior UI/UX taste check — kills generic AI design, enforces real design principles |
+| `ts:gpt-tasteskill` | Elite UX/UI + GSAP motion engineering — true randomness, asymmetry, depth |
+| `ts:minimalist-skill` | Minimalist style — warm monochrome, typographic contrast, editorial feel |
+| `ts:brutalist-skill` | Brutalist style — Swiss typography meets military terminal aesthetics |
+| `ts:soft-skill` | Agency soft style — high-end fonts, spacing, design system rules |
+| `ts:redesign-skill` | Upgrade existing sites/apps to premium quality without breaking anything |
+| `ts:image-to-code-skill` | Convert a design image/screenshot into working website code |
+| `ts:imagegen-frontend-web` | Generate premium conversion-aware web UI images |
+| `ts:imagegen-frontend-mobile` | Generate premium mobile app UI images |
+| `ts:stitch-skill` | Generate DESIGN.md for Google Stitch design systems |
+| `ts:brandkit` | Generate brand-kit boards, logo systems, identity decks |
+| `ts:output-skill` | Force complete output — no truncation, full code always |
 
 ---
 
-### 🧠 Planning & Thinking
+### `/impeccable` Plugin (23 UI/UX Sub-commands)
+> Type `/impeccable <sub-command>`
 
 | Command | Purpose |
 |---------|---------|
-| `/brainstorm` | Structured brainstorming — explores intent, requirements, and design before writing any code |
-| `/plan` | Create a step-by-step implementation plan for a multi-step task |
-| `/write-plan` | Write a detailed plan document before touching code |
-| `/office-hours` | Idea validation and design review session |
-| `/plan-eng-review` | Engineering-focused plan review |
-| `/plan-ceo-review` | Strategy/CEO-level plan review |
+| `/impeccable` | Full UI/UX audit — triggers smart analysis of any UI |
+| `/impeccable audit` | Score UI against design heuristics |
+| `/impeccable polish` | Micro-detail polish — spacing, alignment, typography |
+| `/impeccable critique` | Honest critique of what's wrong with the design |
+| `/impeccable redesign` | Full redesign suggestion with direction |
+| `/impeccable bolder` | Make a bland/quiet design more bold and striking |
+| `/impeccable quieter` | Make a loud design more refined and calm |
+| `/impeccable animate` | Add motion and micro-interactions |
+| `/impeccable colorize` | Apply a strong color system |
+| `/impeccable typeset` | Fix and improve typography |
+| `/impeccable clarify` | Improve information hierarchy and clarity |
+| `/impeccable distill` | Strip to essentials — remove noise |
+| `/impeccable shape` | Improve layout and shape language |
+| `/impeccable harden` | Make UI more robust and edge-case proof |
+| `/impeccable extract` | Extract design tokens and patterns |
+| `/impeccable brand` | Apply brand identity to UI |
+| `/impeccable adapt` | Adapt design for different contexts (mobile, dark, etc.) |
+| `/impeccable live` | Live browser iteration on UI elements |
+| `/impeccable overdrive` | Ambitious visual effects — extraordinary feel |
+| `/impeccable optimize` | Performance + visual optimization |
+| `/impeccable craft` | Premium craftsmanship pass |
+| `/impeccable onboard` | Improve onboarding flow and empty states |
+| `/impeccable personas` | Design for specific user personas |
+
+---
+
+### `/50` — Ruflo / Claude-Flow Multi-Agent Swarm
+> Type `/50` to launch
+
+| Command | Purpose |
+|---------|---------|
+| `/50` | Launch multi-agent coordinator — spawns 100+ specialized sub-agents using SPARC methodology |
+| `/50 <task>` | Assign a complex task to the swarm (parallel execution, memory management) |
+
+**How it works:** `/50` spawns a coordinator agent that breaks your task into parallel sub-tasks and dispatches specialized agents to each. Best for large, complex work.
+
+---
+
+### `superpowers:` Plugin Skills
+> Type `superpowers:skillname` OR just `/skillname` (most have shortcuts)
+
+| Command | Shortcut | Purpose |
+|---------|---------|---------|
+| `superpowers:using-superpowers` | auto-runs | Routes to correct skill at conversation start |
+| `superpowers:brainstorming` | `/brainstorm` | Explores intent + requirements before any code |
+| `superpowers:writing-plans` | `/write-plan` | Write implementation plan before touching code |
+| `superpowers:executing-plans` | `/execute-plan` | Execute a written plan step by step |
+| `superpowers:test-driven-development` | `/tdd` | Write failing tests first, then implement |
+| `superpowers:systematic-debugging` | `/debug` | Step-by-step structured bug investigation |
+| `superpowers:dispatching-parallel-agents` | `/dispatch` | Run multiple Claude agents in parallel |
+| `superpowers:subagent-driven-development` | `/subagent` | Delegate sub-tasks to specialized agents |
+| `superpowers:requesting-code-review` | `/request-review` | Prepare code for review |
+| `superpowers:receiving-code-review` | `/receive-review` | Process review feedback |
+| `superpowers:finishing-a-development-branch` | `/finish-branch` | Branch completion checklist |
+| `superpowers:using-git-worktrees` | `/worktree` | Safe parallel branch workflow |
+| `superpowers:verification-before-completion` | `/verify` | Pre-completion checklist |
+| `superpowers:writing-skills` | `/write-skill` | Create new Claude skills |
+
+---
+
+### `coderabbit:` Plugin
+> Type `coderabbit:skillname`
+
+| Command | Purpose |
+|---------|---------|
+| `coderabbit:code-review` | Full AI-powered PR review with confidence scoring |
+| `coderabbit:autofix` | Safely apply CodeRabbit review feedback with per-change approval |
+
+---
+
+### `claude-mem:` Plugin (Persistent Memory)
+> Type `claude-mem:skillname` OR shortcut
+
+| Command | Shortcut | Purpose |
+|---------|---------|---------|
+| `claude-mem:learn-codebase` | `/learn-codebase` | Deep-learn entire repo into memory (~5 min) |
+| `claude-mem:mem-search` | `/mem-search <query>` | Search Claude's persistent memory |
+| `claude-mem:timeline-report` | `/timeline-report` | Timeline of all project work in memory |
+| `claude-mem:smart-explore` | `/smart-explore` | Memory-backed codebase exploration |
+| `claude-mem:how-it-works` | `/how-it-works` | Explain how claude-mem works |
+| `claude-mem:pathfinder` | `/pathfinder` | Navigate codebase using memory graph |
+| `claude-mem:knowledge-agent` | `/knowledge-agent` | Query the knowledge graph |
+| `claude-mem:make-plan` | `/make-plan` | Create a memory-aware plan |
+| `claude-mem:do` | `/do <task>` | Execute a task with memory context |
+| `claude-mem:babysit` | `/babysit` | Monitor long-running work |
+| `claude-mem:version-bump` | `/version-bump` | Smart version bumping with memory |
+
+---
+
+### `code-review:` Plugin
+> Type `code-review:skillname`
+
+| Command | Purpose |
+|---------|---------|
+| `code-review:code-reviewer` | Multi-agent PR review with specialized agents + confidence scoring |
+
+---
+
+### `plugin-dev:` Plugin (Build Plugins)
+> Type `plugin-dev:skillname`
+
+| Command | Purpose |
+|---------|---------|
+| `plugin-dev:plugin-structure` | Understand plugin architecture |
+| `plugin-dev:skill-development` | Build new skills |
+| `plugin-dev:command-development` | Build slash commands |
+| `plugin-dev:hook-development` | Build automation hooks |
+| `plugin-dev:mcp-integration` | Add MCP server to a plugin |
+| `plugin-dev:agent-development` | Build agents inside plugins |
+| `plugin-dev:plugin-settings` | Configure plugin settings |
+| `plugin-dev:create-plugin` | Full plugin creation guide |
+
+---
+
+### Standalone Skills (no prefix — just `/skillname`)
+
+#### 🚀 Quick Shortcuts
+| Command | Purpose |
+|---------|---------|
+| `/auto <task>` | Smart router — analyzes task, picks right skills automatically |
+| `/seo` | Full SEO toolkit |
+| `/build <feature>` | Full-feature build shortcut |
+| `/ui <description>` | Generate a UI screen from text |
+| `/tv <symbol>` | TradingView chart analysis |
+| `/menu` | Visual menu of ALL installed skills |
+| `/graphify` | Build/update knowledge graph for project |
+
+#### 🧠 Planning
+| Command | Purpose |
+|---------|---------|
+| `/brainstorm` | Structured exploration before writing code |
+| `/plan` | Implementation plan |
+| `/office-hours` | Idea validation session |
+| `/plan-eng-review` | Engineering plan review |
+| `/plan-ceo-review` | Strategy/CEO plan review |
 | `/plan-design-review` | Design plan review |
-| `/plan-devex-review` | Developer experience plan review |
-| `/plan-tune` | Refine and tune an existing plan |
+| `/plan-tune` | Refine an existing plan |
 
----
-
-### 🏗️ Building & Coding
-
+#### 🏗️ Building
 | Command | Purpose |
 |---------|---------|
-| `/build <feature>` | Full-feature build coordination skill |
-| `/execute-plan` | Execute a written plan step by step |
-| `/feature-dev` | Full feature development workflow |
-| `/gstack` | Primary workflow manager for building in the Gstack stack |
-| `/local-build` | Build a release APK + simulator .app locally for React Native Expo (no EAS needed) |
-| `/laravel-boost` | Laravel-specific development boosts and best practices |
-| `/stripe` | Best practices for Stripe payments, checkout, subscriptions, webhooks, Connect |
-| `/mcp-builder` | Guide to building MCP (Model Context Protocol) servers for any external API |
-| `/agent-sdk-dev` | Build Claude Agent SDK apps (Python/TypeScript) |
-| `/remotion` | Create programmatic videos with React using Remotion |
-| `/manim-video` | Create mathematical and technical animations using Manim |
-| `/artifacts-builder` | Build elaborate multi-component HTML artifacts for claude.ai |
+| `/build <feature>` | Full-feature build |
+| `/feature-dev` | Feature development workflow |
+| `/local-build` | Build React Native APK + simulator app locally |
+| `/stripe` | Stripe payments, checkout, subscriptions best practices |
+| `/mcp-builder` | Build MCP servers for any external API |
+| `/remotion` | Programmatic videos with React |
+| `/manim-video` | Mathematical animations |
+| `/artifacts-builder` | Multi-component HTML artifacts |
+| `/laravel-boost` | Laravel development boosts |
 
----
-
-### 🎨 Design & UI
-
+#### 🎨 Design & UI
 | Command | Purpose |
 |---------|---------|
-| `/ui <description>` | Generate a UI screen or component |
-| `/uiux` | Full UI/UX audit — hierarchy, spacing, accessibility, cognitive load |
-| `/ui-ux-pro-max` | Premium UX/UI design — color intelligence, motion, anti-patterns |
-| `/impeccable` | Deep UI audit — redesign, polish, make bland designs bold |
-| `/frontend-design` | Frontend component architecture and design |
+| `/ui <description>` | Generate a UI component or screen |
+| `/ui-ux-pro-max` | Premium UX/UI — color, motion, anti-patterns |
 | `/dg` | Motion & animation audit (Emil Kowalski, Jhey Tompkins style) |
-| `/canvas-design` | Create posters, art, and static visual designs as PNG/PDF |
-| `/brandkit` | Generate brand-kit boards, logo systems, identity decks |
-| `/brand-guidelines` | Apply Anthropic brand colors and typography to any artifact |
-| `/theme-factory` | Apply one of 10 preset themes (or custom) to slides, docs, HTML pages |
-| `/redesign` | Upgrade existing websites/apps to premium quality without breaking functionality |
-| `/stitch-skill` | Generate DESIGN.md files for Google Stitch design systems |
-| `/ts:taste-skill` | Senior UI/UX taste check — overrides generic AI design biases |
-| `/ts:minimalist-skill` | Minimalist style — warm monochrome, typographic contrast, editorial |
-| `/ts:brutalist-skill` | Brutalist style — Swiss typography fused with military terminal aesthetics |
-| `/ts:soft-skill` | Soft/agency style — high-end fonts, spacing, design system rules |
-| `/ts:gpt-tasteskill` | Elite UX/UI + GSAP motion engineering |
-| `/ts:redesign-skill` | Premium redesign from screenshot or description |
-| `/ts:stitch-skill` | Design system generation for Stitch |
-| `/ts:image-to-code-skill` | Convert image/screenshot into working code |
-| `/ts:imagegen-frontend-web` | Generate premium web UI images |
-| `/ts:imagegen-frontend-mobile` | Generate premium mobile app UI images |
-| `/ts:output-skill` | Force complete output — no truncation |
+| `/canvas-design` | Create posters, art, visual designs as PNG/PDF |
+| `/brandkit` | Brand-kit boards, logo systems, identity decks |
+| `/brand-guidelines` | Apply Anthropic brand colors/typography |
+| `/theme-factory` | Apply themed styles to slides, docs, HTML |
+| `/redesign` | Upgrade existing site to premium quality |
+| `/stitch-skill` | DESIGN.md files for Google Stitch |
+| `/high-end-visual-design` | High-end visual design workflow |
+| `/industrial-brutalist-ui` | Industrial brutalist UI style |
+| `/minimalist-ui` | Clean editorial minimalist UI |
+| `/design-motion-principles` | Motion design audit |
 
----
-
-### 📝 Content & Writing
-
+#### ✅ Quality & Review
 | Command | Purpose |
 |---------|---------|
-| `/content-research-writer` | Research + write high-quality content with citations, hooks, and iteration |
-| `/internal-comms` | Write internal communications — status reports, newsletters, incident reports |
-| `/changelog-generator` | Auto-generate user-facing changelogs from git commit history |
-| `/writing-plans` | Write plans before coding — enforces spec-first discipline |
-| `/writing-skills` | Create or edit Claude skills with best practices |
-| `/skill-creator` | Guide to creating new skills that extend Claude's capabilities |
-| `/skill-share` | Create a skill and share it automatically to Slack |
-| `/twitter-algorithm-optimizer` | Rewrite tweets to maximize reach using Twitter's open-source algorithm |
-| `/sales-enablement` | Create pitch decks, one-pagers, objection handling docs, demo scripts |
+| `/review` | Full code review |
+| `/qa` | QA workflow |
+| `/qa-only` | Tests only, no code changes |
+| `/webapp-testing` | Test local web apps with Playwright |
+| `/playwright-cli` | Browser automation and Playwright tests |
+| `/retro` | Retrospective on completed work |
+| `/health` | Project health check |
+| `/benchmark` | Performance benchmarks |
+| `/pr-review-toolkit` | Full PR review toolkit |
 
----
-
-### 🔍 Research & Investigation
-
+#### 🔐 Security
 | Command | Purpose |
 |---------|---------|
-| `/investigate` | Deep investigation and root-cause analysis |
-| `/scrape <url>` | Scrape a website for content or data |
-| `/browse <url>` | Browse a webpage interactively |
-| `/lead-research-assistant` | Find high-quality leads — analyzes your business and searches for targets |
-| `/competitive-ads-extractor` | Extract and analyze competitor ads from Facebook/LinkedIn ad libraries |
-| `/developer-growth-analysis` | Analyze your Claude Code chat history for coding patterns and growth areas |
-| `/meeting-insights-analyzer` | Analyze meeting transcripts for communication patterns and blind spots |
-| `/greptile` | Search and understand large codebases with Greptile AI |
-| `/langsmith-fetch` | Debug LangChain/LangGraph agents by fetching LangSmith traces |
-| `/context7 <library>` | Fetch live up-to-date documentation for any library or framework |
+| `/security-review` | Full security audit |
+| `/security-best-practices` | Check against OWASP + security patterns |
+| `/guard` | Safety check before risky actions |
+| `/freeze` | Pause all actions (nothing executes) |
+| `/unfreeze` | Resume from freeze |
+| `/careful` | Extra-careful mode for sensitive work |
 
----
-
-### ✅ Review & Quality
-
+#### 🚢 Deploy & Ship
 | Command | Purpose |
 |---------|---------|
-| `/review` | Full code review with suggestions |
-| `/coderabbit:code-review` | AI-powered automated PR review |
-| `/coderabbit:autofix` | Auto-apply CodeRabbit review feedback safely with per-change approval |
-| `/qa` | Quality assurance workflow |
-| `/qa-only` | Run tests and QA without changing any code |
-| `/webapp-testing` | Test local web apps with Playwright — verify UI, capture screenshots, check logs |
-| `/playwright-cli` | Automate browser interactions and write Playwright tests |
-| `/playwright` | Full Playwright testing workflow |
-| `/retro` | Run a retrospective on completed work |
-| `/health` | Check overall project health |
-| `/verification-before-completion` | Pre-completion checklist before marking a task done |
-| `/benchmark` | Run performance benchmarks |
-| `/benchmark-models` | Compare Claude model performance |
-| `/pr-review-toolkit` | Full PR review toolkit — comments, approvals, change requests |
+| `/ship` | End-to-end deploy workflow |
+| `/land-and-deploy` | Land branch + deploy |
+| `/canary` | Canary deployment |
+| `/setup-deploy` | First-time deploy setup |
 
----
-
-### 🔐 Security
-
+#### 🔌 Integrations
 | Command | Purpose |
 |---------|---------|
-| `/security-review` | Full security audit of code |
-| `/security-best-practices` | Check code against security patterns (OWASP, etc.) |
-| `/security-guidance` | General security guidance for your architecture |
-| `/guard` | Safety check before any risky or destructive action |
-
----
-
-### 🚢 Shipping & Deploy
-
-| Command | Purpose |
-|---------|---------|
-| `/ship` | End-to-end ship/deploy workflow |
-| `/land-and-deploy` | Land a branch and deploy |
-| `/canary` | Canary deployment workflow |
-| `/setup-deploy` | First-time deployment setup |
-| `/finishing-a-development-branch` | Branch completion checklist — merge, PR, or cleanup options |
-
----
-
-### 🗄️ Databases
-
-| Command | Purpose |
-|---------|---------|
-| `/supabase` | Supabase DB operations, schema, queries, Row Level Security |
-| `/firebase-basics` | Firebase/Firestore setup and operations |
-| `/firebase-auth-basics` | Firebase Authentication setup |
-| `/stripe` | Stripe payments, checkout, subscriptions |
-
----
-
-### 🔌 Integrations & Connections
-
-| Command | Purpose |
-|---------|---------|
-| `/connect <app>` | Connect Claude to any app — send emails, create issues, post messages |
-| `/connect-apps` | Connect to Gmail, Slack, GitHub, Notion and more |
-| `/asana` | Asana task and project management |
-| `/slack` | Slack messaging and workspace operations |
-| `/github` | GitHub repo, issues, PR operations |
+| `/connect <app>` | Connect Claude to any app |
+| `/connect-apps` | Gmail, Slack, GitHub, Notion integration |
+| `/asana` | Asana project management |
+| `/slack` | Slack messaging |
+| `/github` | GitHub repo + PR operations |
 | `/gitlab` | GitLab operations |
 | `/linear` | Linear issue tracking |
-| `/stripe` | Stripe payment processing |
-| `/hookify` | Create and configure automation hooks/rules |
+| `/hookify` | Create automation hooks |
 
----
-
-### 🧠 Memory & Context
-
+#### 🔍 Research
 | Command | Purpose |
 |---------|---------|
-| `/learn-codebase` | Deep-learn entire repo into persistent memory (~5 min, optional) |
-| `/mem-search <query>` | Search Claude's memory for past work and decisions |
-| `/timeline-report` | View timeline of all project work done in memory |
-| `/smart-explore` | Smart memory-backed codebase exploration |
-| `/how-it-works` | Explain how the claude-mem memory system works |
-| `/context-save` | Save current conversation context to memory |
-| `/context-restore` | Restore a previously saved context |
-| `/pathfinder` | Navigate the codebase using memory graph |
-| `/knowledge-agent` | Query the memory knowledge graph |
+| `/investigate` | Deep investigation + root cause |
+| `/scrape <url>` | Scrape website content |
+| `/browse <url>` | Browse a webpage |
+| `/lead-research-assistant` | Find + qualify leads |
+| `/competitive-ads-extractor` | Extract competitor ads |
+| `/greptile` | Search large codebases |
+| `/langsmith-fetch` | Debug LangChain agents via LangSmith |
+| `/context7 <library>` | Live docs for any library |
+| `/developer-growth-analysis` | Analyze your coding patterns |
+| `/meeting-insights-analyzer` | Analyze meeting transcripts |
 
----
-
-### 🤖 Agent Workflows
-
+#### 🗄️ Databases
 | Command | Purpose |
 |---------|---------|
-| `/50` | Claude-Flow multi-agent swarm — parallel task execution with coordinator |
-| `/pair-agent` | Pair programming with a second Claude agent |
-| `/dispatching-parallel-agents` | Dispatch multiple Claude agents to work in parallel |
-| `/subagent-driven-development` | Delegate sub-tasks to specialized sub-agents |
-| `/systematic-debugging` | Step-by-step structured debugging workflow |
-| `/receiving-code-review` | Process and respond to received code review feedback |
-| `/requesting-code-review` | Prepare code and request a structured code review |
-| `/using-git-worktrees` | Git worktree workflow for safe parallel branches |
-| `/test-driven-development` | TDD workflow — write tests first, then implementation |
+| `/supabase` | Supabase DB, schema, RLS |
+| `/firebase-basics` | Firebase/Firestore setup |
+| `/firebase-auth-basics` | Firebase Authentication |
 
----
-
-### 📊 Data & Documents
-
+#### 📊 Documents & Data
 | Command | Purpose |
 |---------|---------|
-| `/make-pdf` | Generate a PDF document |
-| `/pdf` | Full PDF manipulation — extract text, create, modify |
-| `/docx` | Create/edit Word documents with tracked changes support |
-| `/xlsx` | Create/edit spreadsheets with formulas and formatting |
-| `/pptx` | Create/edit PowerPoint presentations |
-| `/graphify` | Build a knowledge graph from code, docs, papers, or images |
-| `/theme-factory` | Apply visual themes to any document or artifact |
+| `/make-pdf` | Generate a PDF |
+| `/pdf` | Full PDF manipulation |
+| `/docx` | Create/edit Word documents |
+| `/xlsx` | Create/edit spreadsheets |
+| `/pptx` | Create/edit presentations |
+| `/graphify` | Knowledge graph from code or docs |
+| `/theme-factory` | Visual themes for any document |
 
----
-
-### 💼 Career & Business
-
+#### 💼 Career & Business
 | Command | Purpose |
 |---------|---------|
-| `/career-ops` | Job search ops — scan portals, evaluate postings, track applications |
-| `/tailored-resume-generator` | Generate ATS-friendly resumes tailored to a job description |
-| `/lead-research-assistant` | Find and qualify leads for your product/service |
-| `/sales-enablement` | Pitch decks, one-pagers, objection handling, demo scripts |
-| `/invoice-organizer` | Organize invoices and receipts for tax prep — auto-rename and sort |
-| `/domain-name-brainstormer` | Generate domain name ideas and check availability across TLDs |
+| `/career-ops` | Job search, CV generation, tracking |
+| `/tailored-resume-generator` | ATS-friendly resume from job description |
+| `/lead-research-assistant` | Find leads for your product |
+| `/sales-enablement` | Pitch decks, one-pagers, demo scripts |
+| `/invoice-organizer` | Organize invoices for tax prep |
+| `/domain-name-brainstormer` | Domain ideas + availability check |
+| `/content-research-writer` | Research + write high-quality content |
+| `/internal-comms` | Status reports, newsletters, incident reports |
+| `/changelog-generator` | User-facing changelogs from git commits |
+| `/twitter-algorithm-optimizer` | Optimize tweets for max reach |
 
----
-
-### 🛠️ Dev Tools & Utilities
-
+#### 🛠️ Dev Utilities
 | Command | Purpose |
 |---------|---------|
-| `/app-icon` | Generate app icons for React Native Expo (iOS 26 support) |
-| `/app-store-audit` | Audit iOS app for App Store rejection risks before submission |
-| `/image-enhancer` | Improve image quality — resolution, sharpness, clarity |
-| `/image-to-code` | Convert a design image into working website code |
-| `/video-downloader` | Download YouTube videos in any quality/format or as MP3 |
-| `/raffle-winner-picker` | Pick random winners from lists, spreadsheets, or Google Sheets |
-| `/file-organizer` | Intelligently organize files and folders — find duplicates, suggest structure |
-| `/slack-gif-creator` | Create animated GIFs optimized for Slack |
-| `/tv <symbol>` | TradingView chart analysis for stocks and crypto |
-| `/playground` | Interactive code sandbox for experimentation |
+| `/app-icon` | App icons for React Native Expo (iOS 26) |
+| `/app-store-audit` | Audit iOS app before App Store submission |
+| `/image-enhancer` | Improve image quality and resolution |
+| `/image-to-code` | Convert design image to code |
+| `/video-downloader` | Download YouTube videos / audio |
+| `/raffle-winner-picker` | Pick random winners from lists |
+| `/file-organizer` | Smart file/folder organization |
+| `/slack-gif-creator` | Animated GIFs for Slack |
+| `/playground` | Interactive code sandbox |
+| `/skill-creator` | Create new Claude skills |
+| `/skill-share` | Create + share skill to Slack |
 
----
-
-### 🔧 LSP Language Servers (code intelligence)
-
+#### 🔧 LSP Language Servers
 | Command | Purpose |
 |---------|---------|
-| `/swift-lsp` | Swift language server — autocomplete, diagnostics, go-to-definition |
+| `/swift-lsp` | Swift — autocomplete, go-to-def, diagnostics |
 | `/typescript-lsp` | TypeScript language server |
 | `/clangd-lsp` | C/C++ language server |
 | `/csharp-lsp` | C# language server |
@@ -298,139 +340,96 @@ Type `/` in Claude Code to see all commands. Here is every single one:
 | `/lua-lsp` | Lua language server |
 | `/php-lsp` | PHP language server |
 
----
-
-### 🔒 Safety Controls
-
+#### 🔒 SEO (all sub-commands)
 | Command | Purpose |
 |---------|---------|
-| `/freeze` | Pause all Claude actions (safety mode — nothing executes) |
-| `/unfreeze` | Resume from freeze mode |
-| `/guard` | Safety check — confirm before any risky/destructive action |
-| `/careful` | Enable extra-careful mode for sensitive operations |
+| `/seo` | Master SEO skill |
+| `/seo-audit` | Full site SEO audit |
+| `/seo-technical` | Technical SEO |
+| `/seo-content` | Content optimization |
+| `/seo-schema` | Structured data / JSON-LD |
+| `/seo-sitemap` | Sitemap generation |
+| `/seo-images` | Image SEO |
+| `/seo-page` | Single page SEO |
+| `/seo-geo` | Local/geo SEO |
+| `/seo-hreflang` | Multilingual hreflang |
+| `/seo-competitor-pages` | Competitor page analysis |
+| `/seo-programmatic` | Programmatic SEO |
+| `/seo-plan` | SEO strategy plan |
 
 ---
 
-### 📦 Plugin Management (terminal commands)
+## 📦 Installed Plugins (17)
 
-Run these in your terminal, not in Claude:
-
-```bash
-claude plugins list                              # See all installed plugins
-claude plugins install <name@marketplace>        # Install a plugin
-claude plugins update <name>                     # Update a plugin
-claude plugins uninstall <name>                  # Remove a plugin
-claude plugins marketplace list                  # See all marketplaces
-claude plugins marketplace add github:<repo>     # Add a marketplace
-claude plugins marketplace update                # Refresh marketplace indexes
-```
+| Plugin name | Marketplace | Plugin prefix | Purpose |
+|-------------|------------|--------------|---------|
+| `superpowers` | claude-plugins-official | `superpowers:` | Core skills (TDD, debug, plan) |
+| `superpowers` | superpowers-dev | `superpowers:` | Dev/latest builds |
+| `frontend-design` | claude-plugins-official | `frontend-design:` | UI components |
+| `context7` | claude-plugins-official | `context7:` | Live library docs (MCP) |
+| `code-review` | claude-plugins-official | `code-review:` | Multi-agent PR review |
+| `coderabbit` | claude-plugins-official | `coderabbit:` | AI PR review |
+| `security-guidance` | claude-plugins-official | `security-guidance:` | Security patterns |
+| `supabase` | claude-plugins-official | `supabase:` | Supabase workflows |
+| `plugin-dev` | claude-plugins-official | `plugin-dev:` | Build plugins |
+| `playground` | claude-plugins-official | `playground:` | Code sandboxes |
+| `claude-code-setup` | claude-plugins-official | `claude-code-setup:` | Setup recommendations |
+| `swift-lsp` | claude-plugins-official | `swift-lsp:` | Swift language server |
+| `Notion` | claude-plugins-official | `Notion:` | Notion integration |
+| `claude-mem` | thedotmack | `claude-mem:` | Persistent memory |
+| `impeccable` | impeccable | `impeccable` | UI audit (23 commands) |
+| `ts` | taste-skills | `ts:` | Design taste + image gen |
+| `50` | ruflo | `50` | Multi-agent swarm |
 
 ---
 
 ## 🔄 How Skills Appear in Claude
 
-**1. Slash commands** — type `/` and see the full list. Pick any and Claude activates it:
+**1. Type `/` to see all commands** — full dropdown list appears
+
+**2. Use the prefix syntax:**
 ```
-/brainstorm
-/ship
-/review
-/auto build me a payment form
+ts:taste-skill          ← invoke taste-skill from ts plugin
+impeccable polish       ← invoke polish sub-command from impeccable
+superpowers:brainstorming
+coderabbit:code-review
+claude-mem:learn-codebase
+50                      ← launch ruflo swarm
 ```
 
-**2. Auto-activation** — Claude activates skills automatically based on context:
-- Working on UI → `impeccable` + `ts:taste-skill` activate
-- Asking about a library → `context7` fetches live docs
-- About to deploy → `guard` checks safety first
-- Writing code → `security-guidance` watches for vulnerabilities
-
-**3. `/auto` smart routing** — describe what you want, Claude picks the right skill chain:
+**3. `/auto <task>` routes automatically:**
 ```
-/auto I need to build a Stripe checkout page with Supabase
+/auto build a payment form
 → activates: stripe + supabase + frontend-design + security-best-practices
 ```
 
-**4. Suggestions panel** — superpowers skills appear as inline suggestions when relevant
+**4. Claude auto-activates skills based on context** — no command needed:
+- Working on UI → `impeccable` + `ts:taste-skill`
+- Asking about React → `context7` fetches live docs
+- About to deploy → `guard` checks safety
+- Bug encountered → `superpowers:systematic-debugging`
 
 ---
 
-## 📦 What Gets Installed
-
-### 17 Plugins
-
-| Plugin | Marketplace | Purpose |
-|--------|------------|---------|
-| `superpowers` | claude-plugins-official | Core skill system |
-| `superpowers` | superpowers-dev | Latest dev version |
-| `frontend-design` | claude-plugins-official | UI/component design |
-| `context7` | claude-plugins-official | Live library docs |
-| `code-review` | claude-plugins-official | Code review |
-| `coderabbit` | claude-plugins-official | AI PR review |
-| `security-guidance` | claude-plugins-official | Security patterns |
-| `supabase` | claude-plugins-official | Supabase workflows |
-| `plugin-dev` | claude-plugins-official | Build plugins |
-| `playground` | claude-plugins-official | Code sandboxes |
-| `claude-code-setup` | claude-plugins-official | Setup guide |
-| `swift-lsp` | claude-plugins-official | Swift LSP |
-| `Notion` | claude-plugins-official | Notion integration |
-| `claude-mem` | thedotmack | Persistent memory |
-| `impeccable` | impeccable | UI audit & polish |
-| `ts` | taste-skills | Design taste |
-| `50` | ruflo | Multi-agent swarm |
-
-### 7 Marketplaces
-
-| Marketplace | GitHub Repo | Provides |
-|------------|------------|---------|
-| `claude-plugins-official` | anthropics/claude-plugins-official | All official plugins |
-| `thedotmack` | thedotmack/claude-mem | claude-mem memory plugin |
-| `superpowers-dev` | obra/superpowers | Dev superpowers builds |
-| `career-ops` | santifer/career-ops | Career tools |
-| `cwb-plugins` | Code-with-Beto/skills | Community skills |
-| `impeccable` | pbakaus/impeccable | UI audit plugin |
-| `taste-skills` | Leonxlnx/taste-skill | Design taste plugins |
-| `ruflo` | ruvnet/ruflo | Claude-Flow swarm |
-
----
-
-## 🔁 Keep Skills Updated
+## 🔁 Keep Updated
 
 ```bash
-# On your main Mac — after adding/changing skills:
-cd ~/Desktop/skill
-bash snapshot.sh
-git add -A && git commit -m "update skills"
-git push
+# After adding skills — snapshot + push:
+cd ~/Desktop/skill && bash snapshot.sh
+git add -A && git commit -m "update" && git push
 
-# On any other Mac — pull latest:
+# On another Mac — pull + install:
 cd ~/.claude-skill-setup && git pull && bash install.sh
 ```
 
----
-
 ## 📁 Repo Structure
-
 ```
 claude-skill/
-├── bootstrap.sh            ← one-liner: curl | bash  (for new Mac)
+├── bootstrap.sh            ← curl | bash one-liner
 ├── install.sh              ← full installer
-├── snapshot.sh             ← capture latest skills → commit
+├── snapshot.sh             ← capture current skills
 ├── CLAUDE.md               ← global agent instructions
-├── settings-template.json  ← Claude settings (no secrets)
-├── claude-skills/          ← 52 custom .md skill files
-└── agent-skills/           ← 128 plugin directories
+├── settings-template.json  ← settings (no secrets)
+├── claude-skills/          ← 52 custom skill .md files
+└── agent-skills/           ← 128 agent skill directories
 ```
-
----
-
-## 🔑 Add Your API Keys (after install)
-
-Add to `~/.zshrc`:
-
-```bash
-export ANTHROPIC_API_KEY="sk-ant-..."    # Claude API
-export GITHUB_TOKEN="ghp_..."           # GitHub CLI
-export SUPABASE_URL="https://..."       # Supabase
-export SUPABASE_ANON_KEY="eyJ..."       # Supabase anon key
-```
-
-Then: `source ~/.zshrc`
