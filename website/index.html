@@ -4,59 +4,69 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Claude Skill Pack — Every Skill. One Command.</title>
-  <meta name="description" content="Install 17 plugins, 128 agent skills, and 52 custom Claude Code skills in one command. Works on all editors and CLI tools.">
+  <meta name="description" content="Install 17 plugins, 180+ agent skills, and 52 custom Claude Code skills in one command. Works on all editors and CLI tools.">
   <meta property="og:title" content="Claude Skill Pack — Every Skill. One Command.">
-  <meta property="og:description" content="Works with Claude Code, VS Code, Cursor, JetBrains, Codex and CLI.">
+  <meta property="og:description" content="180+ skills, 17 plugins. One command installs everything on any Mac.">
   <meta property="og:url" content="https://skills.shegerpay.com">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Claude Skill Pack — Every Skill. One Command.">
+  <meta name="twitter:description" content="180+ skills, 17 plugins. One command installs everything on any Mac.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Favicon: inline SVG via data URI -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2316a34a'/%3E%3Ctext x='16' y='22' font-family='system-ui' font-size='18' font-weight='700' fill='white' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
 
   <style>
     :root {
-      --bg:        #f8faf8;
-      --bg-deep:   #f0f4f0;
-      --surface:   #ffffff;
-      --surface-2: #f4f7f4;
-      --ink:       #111a11;
-      --ink-soft:  #3d5c3d;
-      --ink-mute:  #7a9a7a;
-      --line:      #d4e4d4;
-      --accent:    #16a34a;
-      --accent-2:  #15803d;
-      --accent-3:  #22c55e;
+      --bg:          #f8faf8;
+      --bg-deep:     #f0f4f0;
+      --surface:     #ffffff;
+      --surface-2:   #f4f7f4;
+      --ink:         #111a11;
+      --ink-soft:    #3d5c3d;
+      --ink-mute:    #7a9a7a;
+      --line:        #d4e4d4;
+      --accent:      #16a34a;
+      --accent-2:    #15803d;
+      --accent-3:    #22c55e;
       --accent-soft: rgba(22,163,74,.1);
       --accent-glow: rgba(22,163,74,.2);
-      --red:       #dc2626;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.07);
-      --shadow-md: 0 4px 16px rgba(0,0,0,.08);
-      --shadow-lg: 0 8px 32px rgba(0,0,0,.1);
-      --radius:    12px;
-      --radius-lg: 20px;
-      --font-body: 'Geist','SF Pro Text',system-ui,-apple-system,sans-serif;
-      --font-mono: 'JetBrains Mono','SF Mono',monospace;
+      --shadow-sm:   0 1px 3px rgba(0,0,0,.07);
+      --shadow-md:   0 4px 16px rgba(0,0,0,.08);
+      --shadow-lg:   0 8px 32px rgba(0,0,0,.1);
+      --radius:      12px;
+      --radius-lg:   20px;
+      --font-body:   'Geist','SF Pro Text',system-ui,-apple-system,sans-serif;
+      --font-mono:   'JetBrains Mono','SF Mono',monospace;
     }
 
     *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
-    html { scroll-behavior:smooth; }
+    html { scroll-behavior:smooth; scroll-padding-top:68px; }
     body { background:var(--bg); color:var(--ink); font-family:var(--font-body); font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
     a { color:inherit; text-decoration:none; }
     button { font-family:inherit; cursor:pointer; border:none; background:none; }
 
-    @keyframes enter { from{opacity:0;transform:translateY(10px);filter:blur(3px)} to{opacity:1;transform:none;filter:none} }
+    /* Focus — keyboard nav */
+    :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:4px; }
+
+    /* Scroll animations — opacity + translate only, no blur (expensive paint) */
+    @keyframes enter { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
     @keyframes pulse-ring { 0%{transform:scale(1);opacity:.5} 100%{transform:scale(1.4);opacity:0} }
-    [data-anim] { opacity:0; transform:translateY(10px); filter:blur(3px); transition:opacity .5s cubic-bezier(.2,.8,.2,1),transform .5s cubic-bezier(.2,.8,.2,1),filter .5s cubic-bezier(.2,.8,.2,1); }
-    [data-anim].visible { opacity:1; transform:none; filter:none; }
-    @media(prefers-reduced-motion:reduce) { [data-anim],[data-anim].visible { opacity:1;transform:none;filter:none;transition:none; } }
+
+    [data-anim] { opacity:0; transform:translateY(8px); transition:opacity .45s cubic-bezier(.2,.8,.2,1),transform .45s cubic-bezier(.2,.8,.2,1); }
+    [data-anim].visible { opacity:1; transform:none; }
+    @media(prefers-reduced-motion:reduce) {
+      [data-anim],[data-anim].visible { opacity:1;transform:none;transition:none; }
+      .logo-pulse { animation:none; opacity:0; }
+    }
 
     /* ── Nav ── */
     nav {
       position:fixed; top:0; left:0; right:0; z-index:100;
       height:60px; display:flex; align-items:center; justify-content:space-between;
       padding:0 5%;
-      background:rgba(248,250,248,.92);
+      background:rgba(248,250,248,.94);
       backdrop-filter:blur(16px);
       border-bottom:1px solid var(--line);
     }
@@ -85,7 +95,7 @@
     .nav-btn {
       padding:7px 16px; border-radius:8px;
       font-size:.84rem; font-weight:600;
-      background:var(--accent); color:#fff;
+      background:var(--accent); color:#f9fdf9;
       transition:background .2s, transform .15s, box-shadow .2s;
       display:inline-block;
     }
@@ -131,7 +141,7 @@
     .hero-title em { font-style:normal; color:var(--accent); }
     .hero-sub {
       font-size:1.1rem; color:var(--ink-soft); max-width:540px;
-      margin:0 auto 44px;
+      margin:0 auto 44px; line-height:1.75;
       animation:enter .5s .13s cubic-bezier(.2,.8,.2,1) both;
     }
     .install-box {
@@ -148,35 +158,39 @@
     .install-cmd { font-family:var(--font-mono); font-size:.78rem; color:var(--ink); flex:1; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .copy-btn {
       flex-shrink:0; padding:6px 14px; border-radius:7px;
-      background:var(--accent); color:#fff;
+      background:var(--accent); color:#f9fdf9;
       font-size:.75rem; font-weight:600; font-family:var(--font-mono);
       transition:background .2s, transform .15s;
+      min-width:56px; min-height:32px;
     }
     .copy-btn:hover { background:var(--accent-2); transform:translateY(-1px); }
     .copy-btn.copied { background:var(--accent-3); }
     .hero-note { font-size:.76rem; color:var(--ink-mute); margin-top:12px; font-family:var(--font-mono); animation:enter .5s .23s cubic-bezier(.2,.8,.2,1) both; }
-    .hero-stats {
-      display:flex; gap:44px; margin-top:56px;
-      animation:enter .5s .28s cubic-bezier(.2,.8,.2,1) both;
-      flex-wrap:wrap; justify-content:center;
-    }
-    .stat { text-align:center; }
-    .stat-num { display:block; font-size:2.2rem; font-weight:800; letter-spacing:-.05em; color:var(--accent); }
-    .stat-label { font-size:.76rem; color:var(--ink-mute); font-family:var(--font-mono); }
 
-    /* ── Platform badges ── */
+    /* Hero stats — inline strip, not metric cards */
+    .hero-stats {
+      display:flex; align-items:center; flex-wrap:wrap; gap:6px 4px;
+      margin-top:48px; justify-content:center;
+      animation:enter .5s .28s cubic-bezier(.2,.8,.2,1) both;
+    }
+    .stat-item { font-size:.88rem; color:var(--ink-soft); padding:4px 2px; }
+    .stat-item strong { color:var(--accent-2); font-weight:700; }
+    .stat-sep { color:var(--line); font-size:1rem; padding:0 4px; user-select:none; }
+
+    /* Platform badges */
     .platforms-row {
       display:flex; flex-wrap:wrap; gap:8px; justify-content:center;
-      margin-top:36px;
+      margin-top:32px;
       animation:enter .5s .33s cubic-bezier(.2,.8,.2,1) both;
     }
     .plat-badge {
       display:flex; align-items:center; gap:7px;
-      padding:6px 13px; border-radius:100px;
+      padding:7px 14px; border-radius:100px;
       background:var(--surface); border:1.5px solid var(--line);
       font-size:.78rem; font-weight:500; color:var(--ink-soft);
       box-shadow:var(--shadow-sm);
       transition:border-color .2s, color .2s;
+      min-height:36px;
     }
     .plat-badge:hover { border-color:var(--accent); color:var(--accent-2); }
     .plat-icon { width:14px; height:14px; flex-shrink:0; }
@@ -186,7 +200,7 @@
     .container { max-width:1100px; margin:0 auto; }
     .section-label { font-family:var(--font-mono); font-size:.73rem; color:var(--accent); letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
     .section-title { font-size:clamp(1.7rem,3.5vw,2.4rem); font-weight:800; letter-spacing:-.035em; margin-bottom:14px; }
-    .section-sub { font-size:.97rem; color:var(--ink-soft); max-width:500px; }
+    .section-sub { font-size:.97rem; color:var(--ink-soft); max-width:500px; line-height:1.7; }
 
     /* ── Steps ── */
     .steps-section { background:var(--bg-deep); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
@@ -202,7 +216,11 @@
     /* ── Platform install tabs ── */
     .platform-section { background:var(--surface); }
     .plat-tabs { display:flex; gap:4px; flex-wrap:wrap; margin:32px 0 24px; }
-    .plat-tab { padding:7px 15px; border-radius:8px; font-size:.82rem; font-weight:500; color:var(--ink-soft); background:transparent; border:1.5px solid transparent; transition:all .2s; }
+    .plat-tab {
+      padding:8px 16px; border-radius:8px; font-size:.82rem; font-weight:500;
+      color:var(--ink-soft); background:transparent; border:1.5px solid transparent;
+      transition:all .2s; min-height:38px;
+    }
     .plat-tab:hover { background:var(--surface-2); color:var(--ink); }
     .plat-tab.active { background:var(--accent-soft); color:var(--accent-2); border-color:rgba(22,163,74,.3); font-weight:600; }
     .plat-content { display:none; }
@@ -212,34 +230,43 @@
       padding:22px 24px; font-family:var(--font-mono); font-size:.82rem; line-height:1.7;
       position:relative; overflow-x:auto;
     }
-    .code-block .c-green { color:#69f0ae; }
-    .code-block .c-dim   { color:#78909c; }
-    .code-block .c-white { color:#eceff1; }
-    .code-block .c-yellow{ color:#fff59d; }
+    .code-block .c-green  { color:#69f0ae; }
+    .code-block .c-dim    { color:#78909c; }
+    .code-block .c-white  { color:#eceff1; }
+    .code-block .c-yellow { color:#fff59d; }
     .copy-code-btn {
       position:absolute; top:12px; right:12px;
       padding:5px 12px; border-radius:6px;
       background:rgba(255,255,255,.1); color:rgba(255,255,255,.7);
       font-size:.72rem; font-family:var(--font-mono);
       transition:background .2s, color .2s;
+      min-height:30px;
     }
-    .copy-code-btn:hover { background:rgba(255,255,255,.2); color:#fff; }
+    .copy-code-btn:hover { background:rgba(255,255,255,.2); color:#eceff1; }
     .plat-note { margin-top:14px; font-size:.83rem; color:var(--ink-soft); display:flex; align-items:flex-start; gap:8px; }
     .plat-note-icon { width:16px; height:16px; background:var(--accent-soft); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
 
     /* ── Skills browser ── */
     .skills-tabs { display:flex; gap:4px; flex-wrap:wrap; margin:32px 0 24px; }
-    .tab-btn { padding:7px 15px; border-radius:8px; font-size:.82rem; font-weight:500; color:var(--ink-soft); background:transparent; border:1.5px solid transparent; transition:all .2s; }
+    .tab-btn {
+      padding:8px 16px; border-radius:8px; font-size:.82rem; font-weight:500;
+      color:var(--ink-soft); background:transparent; border:1.5px solid transparent;
+      transition:all .2s; min-height:38px;
+    }
     .tab-btn:hover { background:var(--surface-2); color:var(--ink); }
     .tab-btn.active { background:var(--accent-soft); color:var(--accent-2); border-color:rgba(22,163,74,.3); font-weight:600; }
     .skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:10px; }
-    .skill-card { background:var(--surface); border:1.5px solid var(--line); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow-sm); transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .2s; }
+    .skill-card {
+      background:var(--surface); border:1.5px solid var(--line); border-radius:var(--radius);
+      padding:18px; box-shadow:var(--shadow-sm);
+      transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .2s;
+    }
     .skill-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); border-color:rgba(22,163,74,.3); }
     .sc-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:9px; }
     .sc-cmd { font-family:var(--font-mono); font-size:.71rem; color:var(--accent-2); padding:2px 7px; background:var(--accent-soft); border-radius:5px; }
-    .sc-tag { font-size:.66rem; color:var(--ink-mute); font-family:var(--font-mono); padding:2px 6px; background:var(--bg-deep); border-radius:4px; border:1px solid var(--line); }
+    .sc-tag { font-size:.68rem; color:var(--ink-mute); font-family:var(--font-mono); padding:2px 6px; background:var(--bg-deep); border-radius:4px; border:1px solid var(--line); }
     .sc-name { font-size:.9rem; font-weight:700; letter-spacing:-.015em; margin-bottom:5px; }
-    .sc-desc { font-size:.79rem; color:var(--ink-soft); line-height:1.55; }
+    .sc-desc { font-size:.82rem; color:var(--ink-soft); line-height:1.55; }
 
     /* ── Agent ── */
     .agent-section { background:var(--bg-deep); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
@@ -267,30 +294,52 @@
     .user-row .msg-bubble { border-radius:10px 0 10px 10px; background:var(--accent-soft); border-color:rgba(22,163,74,.2); }
     .skill-pill { display:inline-block; margin:3px 3px 0 0; padding:2px 8px; border-radius:5px; background:var(--accent-soft); border:1px solid rgba(22,163,74,.25); font-family:var(--font-mono); font-size:.7rem; color:var(--accent-2); }
     .chat-input-wrap { padding:12px 14px; border-top:1px solid var(--line); display:flex; gap:8px; }
-    .chat-input { flex:1; background:var(--bg-deep); border:1.5px solid var(--line); border-radius:8px; padding:8px 13px; color:var(--ink); font-size:.84rem; font-family:inherit; outline:none; transition:border-color .2s; }
+    .chat-input {
+      flex:1; background:var(--bg-deep); border:1.5px solid var(--line);
+      border-radius:8px; padding:10px 13px; color:var(--ink);
+      font-size:.84rem; font-family:inherit; outline:none;
+      transition:border-color .2s; min-height:42px;
+    }
     .chat-input::placeholder { color:var(--ink-mute); }
     .chat-input:focus { border-color:rgba(22,163,74,.4); }
-    .chat-send { padding:8px 16px; border-radius:8px; background:var(--accent); color:#fff; font-size:.8rem; font-weight:600; transition:background .2s, transform .15s; }
+    .chat-send {
+      padding:10px 16px; border-radius:8px; background:var(--accent); color:#f9fdf9;
+      font-size:.8rem; font-weight:600; transition:background .2s, transform .15s;
+      min-height:42px; min-width:56px;
+    }
     .chat-send:hover { background:var(--accent-2); transform:translateY(-1px); }
 
     /* ── Plugins ── */
     .plugins-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:9px; margin-top:36px; }
-    .plugin-card { background:var(--surface); border:1.5px solid var(--line); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow-sm); transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .2s; }
+    .plugin-card {
+      background:var(--surface); border:1.5px solid var(--line); border-radius:var(--radius);
+      padding:16px 18px; box-shadow:var(--shadow-sm);
+      transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .2s;
+    }
     .plugin-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:rgba(22,163,74,.3); }
     .plugin-prefix { font-family:var(--font-mono); font-size:.7rem; color:var(--accent-2); margin-bottom:6px; display:block; }
     .plugin-name { font-size:.88rem; font-weight:700; margin-bottom:4px; }
-    .plugin-from { font-size:.7rem; color:var(--ink-mute); font-family:var(--font-mono); }
+    .plugin-from { font-size:.72rem; color:var(--ink-mute); font-family:var(--font-mono); }
 
     /* ── CTA ── */
     .cta-section { background:var(--accent); text-align:center; padding:80px 5%; }
-    .cta-section .section-title { color:#fff; max-width:560px; margin:12px auto 0; }
-    .cta-section .section-label { color:rgba(255,255,255,.7); }
-    .cta-section .section-sub { color:rgba(255,255,255,.8); margin:14px auto 0; }
+    .cta-section .section-title { color:#f9fdf9; max-width:560px; margin:12px auto 0; }
+    .cta-section .section-label { color:rgba(249,253,249,.7); }
+    .cta-section .section-sub { color:rgba(249,253,249,.8); margin:14px auto 0; }
     .cta-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:36px; }
-    .cta-light { padding:12px 26px; border-radius:var(--radius); background:#fff; color:var(--accent-2); font-size:.93rem; font-weight:700; transition:transform .2s, box-shadow .2s; display:inline-block; }
+    .cta-light {
+      padding:12px 26px; border-radius:var(--radius); background:#f9fdf9; color:var(--accent-2);
+      font-size:.93rem; font-weight:700; transition:transform .2s, box-shadow .2s; display:inline-block;
+      min-height:46px; display:inline-flex; align-items:center;
+    }
     .cta-light:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.15); }
-    .cta-outline { padding:12px 26px; border-radius:var(--radius); background:transparent; color:#fff; font-size:.93rem; font-weight:600; border:2px solid rgba(255,255,255,.5); transition:border-color .2s, background .2s, transform .2s; display:inline-block; }
-    .cta-outline:hover { border-color:#fff; background:rgba(255,255,255,.1); transform:translateY(-2px); }
+    .cta-outline {
+      padding:12px 26px; border-radius:var(--radius); background:transparent; color:#f9fdf9;
+      font-size:.93rem; font-weight:600; border:2px solid rgba(249,253,249,.5);
+      transition:border-color .2s, background .2s, transform .2s; display:inline-block;
+      min-height:46px; display:inline-flex; align-items:center;
+    }
+    .cta-outline:hover { border-color:#f9fdf9; background:rgba(249,253,249,.1); transform:translateY(-2px); }
 
     /* ── Footer ── */
     footer { background:var(--bg-deep); border-top:1px solid var(--line); padding:44px 5% 28px; }
@@ -299,16 +348,28 @@
     .footer-logo-mark { width:26px; height:26px; border-radius:7px; background:var(--accent); display:flex; align-items:center; justify-content:center; }
     .footer-copy { font-size:.76rem; color:var(--ink-mute); margin-top:5px; }
     .footer-links { display:flex; gap:18px; flex-wrap:wrap; }
-    .footer-a { font-size:.8rem; color:var(--ink-mute); transition:color .2s; }
+    .footer-a { font-size:.8rem; color:var(--ink-mute); transition:color .2s; min-height:32px; display:inline-flex; align-items:center; }
     .footer-a:hover { color:var(--ink); }
     .footer-right { display:flex; gap:7px; }
-    .soc-btn { width:34px; height:34px; border-radius:8px; background:var(--surface); border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink-soft); transition:background .2s, color .2s, transform .2s; }
+    .soc-btn { width:36px; height:36px; border-radius:8px; background:var(--surface); border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--ink-soft); transition:background .2s, color .2s, transform .2s; }
     .soc-btn:hover { background:var(--accent-soft); color:var(--accent); transform:translateY(-2px); }
 
+    /* ── Responsive ── */
     @media(max-width:768px) {
       .steps-grid { grid-template-columns:1fr; }
       .agent-wrap { grid-template-columns:1fr; gap:36px; }
       .nav-a { display:none; }
+      section { padding:64px 5%; }
+    }
+    @media(max-width:480px) {
+      .hero { padding:88px 5% 60px; }
+      .hero-title { font-size:2.4rem; }
+      .hero-sub { font-size:1rem; }
+      .install-box { flex-wrap:wrap; gap:10px; }
+      .install-cmd { font-size:.72rem; }
+      .plat-tabs, .skills-tabs { gap:3px; }
+      .plat-tab, .tab-btn { padding:7px 12px; font-size:.79rem; }
+      .plugins-grid { grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); }
     }
   </style>
 </head>
@@ -317,9 +378,9 @@
 <!-- Nav -->
 <nav>
   <a href="/" class="nav-logo">
-    <div class="logo-mark">
+    <div class="logo-mark" aria-hidden="true">
       <div class="logo-pulse"></div>
-      <svg viewBox="0 0 18 18" fill="none">
+      <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
         <path d="M9 2L3 7v9h4v-5h4v5h4V7L9 2z" fill="white" stroke="white" stroke-width=".5"/>
       </svg>
     </div>
@@ -337,48 +398,51 @@
 
 <!-- Hero -->
 <section class="hero" id="install">
-  <div class="hero-bg"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-badge"><span class="badge-dot"></span>v1.0 &mdash; 17 plugins &bull; 128+ skills &bull; all editors</div>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-badge"><span class="badge-dot" aria-hidden="true"></span>v1.0 · 17 plugins · 180+ skills · all editors</div>
   <h1 class="hero-title">Every Claude Code skill.<br><em>One command.</em></h1>
   <p class="hero-sub">Install 17 plugins, 128 agent skills, and 52 custom skills. Works with Claude Code, VS Code, Cursor, JetBrains, Codex, and the CLI.</p>
-  <div class="install-box">
-    <span class="install-prompt">$</span>
+  <div class="install-box" role="group" aria-label="Install command">
+    <span class="install-prompt" aria-hidden="true">$</span>
     <code class="install-cmd" id="cmd-text">curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</code>
-    <button class="copy-btn" id="copy-btn" onclick="copyCmd()">Copy</button>
+    <button type="button" class="copy-btn" id="copy-btn" onclick="copyCmd()">Copy</button>
   </div>
-  <p class="hero-note">macOS &bull; Requires Claude Code + Node.js &bull; <a href="https://skills.shegerpay.com/agent?q=install" style="color:var(--accent)">API</a></p>
+  <p class="hero-note">macOS · Requires Claude Code + Node.js · <a href="https://skills.shegerpay.com/agent?q=install" style="color:var(--accent)">API</a></p>
 
-  <div class="hero-stats">
-    <div class="stat"><span class="stat-num">17</span><span class="stat-label">Plugins</span></div>
-    <div class="stat"><span class="stat-num">128</span><span class="stat-label">Agent Skills</span></div>
-    <div class="stat"><span class="stat-num">52</span><span class="stat-label">Custom Skills</span></div>
-    <div class="stat"><span class="stat-num">7</span><span class="stat-label">Marketplaces</span></div>
+  <div class="hero-stats" aria-label="Stats">
+    <span class="stat-item"><strong>17</strong> plugins</span>
+    <span class="stat-sep" aria-hidden="true">·</span>
+    <span class="stat-item"><strong>128+</strong> agent skills</span>
+    <span class="stat-sep" aria-hidden="true">·</span>
+    <span class="stat-item"><strong>52</strong> custom skills</span>
+    <span class="stat-sep" aria-hidden="true">·</span>
+    <span class="stat-item"><strong>7</strong> marketplaces</span>
   </div>
 
-  <div class="platforms-row">
+  <div class="platforms-row" aria-label="Supported platforms">
     <span class="plat-badge">
-      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="14" height="14" rx="2"/><path d="M5 8h6M8 5v6"/></svg>
+      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="2"/><path d="M5 8h6M8 5v6"/></svg>
       Claude Code CLI
     </span>
     <span class="plat-badge">
-      <svg class="plat-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.5A1.5 1.5 0 012.5 1h11A1.5 1.5 0 0115 2.5v11a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 011 13.5v-11zM5 7l3 3 5-5"/></svg>
+      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 3l5 5-5 5M8 13h7"/></svg>
       VS Code
     </span>
     <span class="plat-badge">
-      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
       Cursor
     </span>
     <span class="plat-badge">
-      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
+      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
       JetBrains
     </span>
     <span class="plat-badge">
-      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="1"/><path d="M5 6l2 2-2 2M8 10h3"/></svg>
+      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="1"/><path d="M5 6l2 2-2 2M8 10h3"/></svg>
       Codex CLI
     </span>
     <span class="plat-badge">
-      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2l12 6-12 6V2z"/></svg>
+      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 2l12 6-12 6V2z"/></svg>
       Gemini CLI
     </span>
   </div>
@@ -391,22 +455,22 @@
     <h2 data-anim class="section-title">Up and running in 3 steps</h2>
     <div class="steps-grid">
       <div class="step" data-anim>
-        <span class="step-num">01 &mdash; INSTALL</span>
-        <div class="step-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+        <span class="step-num">01 / INSTALL</span>
+        <div class="step-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
         <div class="step-title">Run one command</div>
         <p class="step-desc">The bootstrap script clones the repo, adds all 7 marketplaces, and installs all 17 plugins automatically on any Mac.</p>
         <div class="step-code">curl -fsSL .../bootstrap.sh | bash</div>
       </div>
       <div class="step" data-anim>
-        <span class="step-num">02 &mdash; LOGIN</span>
-        <div class="step-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg></div>
+        <span class="step-num">02 / LOGIN</span>
+        <div class="step-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg></div>
         <div class="step-title">Log in to Claude</div>
         <p class="step-desc">A browser window opens. Sign in with your Anthropic account. The script detects login and resumes automatically.</p>
-        <div class="step-code">claude login  &larr; auto-triggered</div>
+        <div class="step-code">claude login &larr; auto-triggered</div>
       </div>
       <div class="step" data-anim>
-        <span class="step-num">03 &mdash; USE</span>
-        <div class="step-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <span class="step-num">03 / USE</span>
+        <div class="step-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
         <div class="step-title">Start using skills</div>
         <p class="step-desc">Restart your editor. Type / to see every command, or /auto to let Claude pick the perfect skill for your task.</p>
         <div class="step-code">/auto build me a landing page</div>
@@ -422,18 +486,18 @@
     <h2 data-anim class="section-title">Works on every editor and CLI</h2>
     <p data-anim class="section-sub">One install. Skills work across all Claude-powered tools automatically.</p>
 
-    <div class="plat-tabs" data-anim>
-      <button class="plat-tab active" onclick="showPlat('cli',this)">Claude Code CLI</button>
-      <button class="plat-tab" onclick="showPlat('vscode',this)">VS Code</button>
-      <button class="plat-tab" onclick="showPlat('cursor',this)">Cursor</button>
-      <button class="plat-tab" onclick="showPlat('jetbrains',this)">JetBrains</button>
-      <button class="plat-tab" onclick="showPlat('codex',this)">Codex CLI</button>
-      <button class="plat-tab" onclick="showPlat('gemini',this)">Gemini CLI</button>
+    <div class="plat-tabs" data-anim role="tablist" aria-label="Platform install guides">
+      <button type="button" class="plat-tab active" onclick="showPlat('cli',this)" role="tab" aria-selected="true">Claude Code CLI</button>
+      <button type="button" class="plat-tab" onclick="showPlat('vscode',this)" role="tab" aria-selected="false">VS Code</button>
+      <button type="button" class="plat-tab" onclick="showPlat('cursor',this)" role="tab" aria-selected="false">Cursor</button>
+      <button type="button" class="plat-tab" onclick="showPlat('jetbrains',this)" role="tab" aria-selected="false">JetBrains</button>
+      <button type="button" class="plat-tab" onclick="showPlat('codex',this)" role="tab" aria-selected="false">Codex CLI</button>
+      <button type="button" class="plat-tab" onclick="showPlat('gemini',this)" role="tab" aria-selected="false">Gemini CLI</button>
     </div>
 
     <div id="plat-cli" class="plat-content active" data-anim>
-      <div class="code-block">
-        <button class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
+      <div class="code-block" data-cmd="curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash">
+        <button type="button" class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
         <span class="c-dim"># One command installs everything</span><br>
         <span class="c-green">curl</span> <span class="c-white">-fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</span><br><br>
         <span class="c-dim"># After install — use skills immediately</span><br>
@@ -441,53 +505,53 @@
         <span class="c-yellow">/auto</span> <span class="c-white">build me a UI component</span><br>
         <span class="c-yellow">/menu</span>   <span class="c-dim"># browse all 180+ skills</span>
       </div>
-      <p class="plat-note"><span class="plat-note-icon"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Skills are stored in ~/.agents/skills/ and ~/.claude/skills/ — shared across all Claude-powered apps automatically.</p>
+      <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Skills are stored in ~/.agents/skills/ and ~/.claude/skills/ — shared across all Claude-powered apps automatically.</p>
     </div>
 
     <div id="plat-vscode" class="plat-content" data-anim>
-      <div class="code-block">
-        <button class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
+      <div class="code-block" data-cmd="curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash">
+        <button type="button" class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
         <span class="c-dim"># 1. Install Claude Code extension in VS Code</span><br>
-        <span class="c-dim">#    Extensions tab → search "Claude Code" → Install</span><br><br>
+        <span class="c-dim">#    Extensions tab &rarr; search "Claude Code" &rarr; Install</span><br><br>
         <span class="c-dim"># 2. Run the skill installer in VS Code terminal</span><br>
         <span class="c-green">curl</span> <span class="c-white">-fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</span><br><br>
-        <span class="c-dim"># 3. Open Claude panel → type / to see all skills</span><br>
+        <span class="c-dim"># 3. Open Claude panel &rarr; type / to see all skills</span><br>
         <span class="c-yellow">/auto</span> <span class="c-white">fix this bug in my code</span>
       </div>
-      <p class="plat-note"><span class="plat-note-icon"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>The Claude Code VS Code extension shares the same skill directory. Install once, works everywhere.</p>
+      <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>The Claude Code VS Code extension shares the same skill directory. Install once, works everywhere.</p>
     </div>
 
     <div id="plat-cursor" class="plat-content" data-anim>
-      <div class="code-block">
-        <button class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
+      <div class="code-block" data-cmd="curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash">
+        <button type="button" class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
         <span class="c-dim"># 1. Enable Claude Code in Cursor settings</span><br>
-        <span class="c-dim">#    Settings → AI → Claude Code → Enable</span><br><br>
+        <span class="c-dim">#    Settings &rarr; AI &rarr; Claude Code &rarr; Enable</span><br><br>
         <span class="c-dim"># 2. Run installer in Cursor terminal</span><br>
         <span class="c-green">curl</span> <span class="c-white">-fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</span><br><br>
-        <span class="c-dim"># 3. Open AI chat → type / for all commands</span><br>
+        <span class="c-dim"># 3. Open AI chat &rarr; type / for all commands</span><br>
         <span class="c-yellow">ts:taste-skill</span>   <span class="c-dim"># design taste enforcement</span><br>
         <span class="c-yellow">/impeccable audit</span> <span class="c-dim"># full UI audit</span>
       </div>
-      <p class="plat-note"><span class="plat-note-icon"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Cursor supports Claude Code skills via the same ~/.agents/skills/ directory.</p>
+      <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Cursor supports Claude Code skills via the same ~/.agents/skills/ directory.</p>
     </div>
 
     <div id="plat-jetbrains" class="plat-content" data-anim>
-      <div class="code-block">
-        <button class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
+      <div class="code-block" data-cmd="curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash">
+        <button type="button" class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
         <span class="c-dim"># 1. Install Claude Code plugin from JetBrains Marketplace</span><br>
-        <span class="c-dim">#    Preferences → Plugins → search "Claude Code"</span><br><br>
+        <span class="c-dim">#    Preferences &rarr; Plugins &rarr; search "Claude Code"</span><br><br>
         <span class="c-dim"># 2. Run installer in IDE terminal</span><br>
         <span class="c-green">curl</span> <span class="c-white">-fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</span><br><br>
-        <span class="c-dim"># 3. Open Claude panel → use all skills</span><br>
+        <span class="c-dim"># 3. Open Claude panel &rarr; use all skills</span><br>
         <span class="c-yellow">superpowers:systematic-debugging</span><br>
         <span class="c-yellow">coderabbit:code-review</span>
       </div>
-      <p class="plat-note"><span class="plat-note-icon"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Works with IntelliJ IDEA, WebStorm, PyCharm, GoLand, and all JetBrains IDEs.</p>
+      <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Works with IntelliJ IDEA, WebStorm, PyCharm, GoLand, and all JetBrains IDEs.</p>
     </div>
 
     <div id="plat-codex" class="plat-content" data-anim>
-      <div class="code-block">
-        <button class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
+      <div class="code-block" data-cmd="npm install -g @openai/codex">
+        <button type="button" class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
         <span class="c-dim"># 1. Install Codex CLI</span><br>
         <span class="c-green">npm</span> <span class="c-white">install -g @openai/codex</span><br><br>
         <span class="c-dim"># 2. Run skill installer</span><br>
@@ -495,12 +559,12 @@
         <span class="c-dim"># 3. Skills in ~/.agents/skills/ are auto-loaded by Codex</span><br>
         <span class="c-yellow">codex</span>  <span class="c-dim"># open Codex with all skills available</span>
       </div>
-      <p class="plat-note"><span class="plat-note-icon"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Codex CLI reads skills from ~/.agents/skills/ automatically. No extra config needed.</p>
+      <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Codex CLI reads skills from ~/.agents/skills/ automatically. No extra config needed.</p>
     </div>
 
     <div id="plat-gemini" class="plat-content" data-anim>
-      <div class="code-block">
-        <button class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
+      <div class="code-block" data-cmd="npm install -g @google/gemini-cli">
+        <button type="button" class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
         <span class="c-dim"># 1. Install Gemini CLI</span><br>
         <span class="c-green">npm</span> <span class="c-white">install -g @google/gemini-cli</span><br><br>
         <span class="c-dim"># 2. Run skill installer</span><br>
@@ -509,7 +573,7 @@
         <span class="c-yellow">gemini</span>  <span class="c-dim"># open Gemini with skills active</span><br>
         <span class="c-yellow">activate_skill brainstorming</span>
       </div>
-      <p class="plat-note"><span class="plat-note-icon"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Gemini CLI uses GEMINI.md files and reads skills from the shared ~/.agents/skills/ directory.</p>
+      <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Gemini CLI uses GEMINI.md files and reads skills from the shared ~/.agents/skills/ directory.</p>
     </div>
   </div>
 </section>
@@ -520,17 +584,17 @@
     <p data-anim class="section-label">Skills Browser</p>
     <h2 data-anim class="section-title">Browse every skill</h2>
     <p data-anim class="section-sub">Exact commands to use in Claude Code after install.</p>
-    <div class="skills-tabs" data-anim>
-      <button class="tab-btn active" onclick="filterSkills('all',this)">All</button>
-      <button class="tab-btn" onclick="filterSkills('design',this)">Design &amp; UI</button>
-      <button class="tab-btn" onclick="filterSkills('code',this)">Code</button>
-      <button class="tab-btn" onclick="filterSkills('seo',this)">SEO</button>
-      <button class="tab-btn" onclick="filterSkills('review',this)">Review</button>
-      <button class="tab-btn" onclick="filterSkills('agent',this)">Agents</button>
-      <button class="tab-btn" onclick="filterSkills('deploy',this)">Deploy</button>
-      <button class="tab-btn" onclick="filterSkills('memory',this)">Memory</button>
+    <div class="skills-tabs" data-anim role="tablist" aria-label="Skill categories">
+      <button type="button" class="tab-btn active" onclick="filterSkills('all',this)" role="tab" aria-selected="true">All</button>
+      <button type="button" class="tab-btn" onclick="filterSkills('design',this)" role="tab" aria-selected="false">Design &amp; UI</button>
+      <button type="button" class="tab-btn" onclick="filterSkills('code',this)" role="tab" aria-selected="false">Code</button>
+      <button type="button" class="tab-btn" onclick="filterSkills('seo',this)" role="tab" aria-selected="false">SEO</button>
+      <button type="button" class="tab-btn" onclick="filterSkills('review',this)" role="tab" aria-selected="false">Review</button>
+      <button type="button" class="tab-btn" onclick="filterSkills('agent',this)" role="tab" aria-selected="false">Agents</button>
+      <button type="button" class="tab-btn" onclick="filterSkills('deploy',this)" role="tab" aria-selected="false">Deploy</button>
+      <button type="button" class="tab-btn" onclick="filterSkills('memory',this)" role="tab" aria-selected="false">Memory</button>
     </div>
-    <div class="skills-grid" id="skills-grid"></div>
+    <div class="skills-grid" id="skills-grid" role="list"></div>
   </div>
 </section>
 
@@ -543,10 +607,10 @@
         <h2 data-anim class="section-title">Find the right skill instantly</h2>
         <p data-anim>Describe what you want to do. The agent returns the exact command to run. Also available as a REST API.</p>
         <ul class="agent-features" data-anim>
-          <li><span class="feat-dot"></span>Knows all 180+ commands by heart</li>
-          <li><span class="feat-dot"></span>Returns copy-paste ready invocations</li>
-          <li><span class="feat-dot"></span>Deployed on Cloudflare Workers globally</li>
-          <li><span class="feat-dot"></span>Zero latency — runs at the edge</li>
+          <li><span class="feat-dot" aria-hidden="true"></span>Knows all 180+ commands by heart</li>
+          <li><span class="feat-dot" aria-hidden="true"></span>Returns copy-paste ready invocations</li>
+          <li><span class="feat-dot" aria-hidden="true"></span>Deployed on Cloudflare Workers globally</li>
+          <li><span class="feat-dot" aria-hidden="true"></span>Zero latency — runs at the edge</li>
         </ul>
         <div class="api-box" data-anim>
           <div class="api-label">REST API — GET</div>
@@ -558,16 +622,24 @@
       </div>
       <div class="agent-chat" data-anim>
         <div class="chat-hdr">
-          <div class="chat-av">S</div>
+          <div class="chat-av" aria-hidden="true">S</div>
           <div>
             <div class="chat-name">Skill Agent</div>
-            <div class="chat-status">online &bull; skills.shegerpay.com</div>
+            <div class="chat-status">online · skills.shegerpay.com</div>
           </div>
         </div>
-        <div class="chat-msgs" id="chat-msgs"></div>
+        <div class="chat-msgs" id="chat-msgs" aria-live="polite" aria-label="Chat messages"></div>
         <div class="chat-input-wrap">
-          <input class="chat-input" id="chat-input" type="text" placeholder="What do you want to do?" maxlength="200" autocomplete="off">
-          <button class="chat-send" onclick="sendMsg()">Ask</button>
+          <input
+            class="chat-input"
+            id="chat-input"
+            type="text"
+            placeholder="What do you want to do?"
+            maxlength="200"
+            autocomplete="off"
+            aria-label="Ask the skill agent"
+          >
+          <button type="button" class="chat-send" onclick="sendMsg()">Ask</button>
         </div>
       </div>
     </div>
@@ -602,12 +674,12 @@
   <div class="footer-inner">
     <div>
       <div class="footer-logo">
-        <div class="footer-logo-mark">
-          <svg width="14" height="14" viewBox="0 0 18 18" fill="none"><path d="M9 2L3 7v9h4v-5h4v5h4V7L9 2z" fill="white"/></svg>
+        <div class="footer-logo-mark" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 2L3 7v9h4v-5h4v5h4V7L9 2z" fill="white"/></svg>
         </div>
         Claude Skill Pack
       </div>
-      <div class="footer-copy">MIT License &mdash; Built by <a href="https://portfolio.ethio-viral.com/" style="color:var(--accent)" target="_blank" rel="noopener">Munir</a> &mdash; <a href="https://skills.shegerpay.com" style="color:var(--accent)">skills.shegerpay.com</a></div>
+      <div class="footer-copy">MIT License · Built by <a href="https://portfolio.ethio-viral.com/" style="color:var(--accent)" target="_blank" rel="noopener">Munir</a> · <a href="https://skills.shegerpay.com" style="color:var(--accent)">skills.shegerpay.com</a></div>
     </div>
     <div class="footer-links">
       <a href="https://github.com/black12-ag/claude-skill" class="footer-a" target="_blank" rel="noopener">GitHub</a>
@@ -617,11 +689,11 @@
       <a href="https://portfolio.ethio-viral.com/" class="footer-a" target="_blank" rel="noopener">Portfolio</a>
     </div>
     <div class="footer-right">
-      <a href="https://github.com/black12-ag/claude-skill" class="soc-btn" target="_blank" rel="noopener" title="GitHub">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      <a href="https://github.com/black12-ag/claude-skill" class="soc-btn" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
       </a>
-      <a href="https://portfolio.ethio-viral.com/" class="soc-btn" target="_blank" rel="noopener" title="Portfolio">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <a href="https://portfolio.ethio-viral.com/" class="soc-btn" target="_blank" rel="noopener" aria-label="Portfolio">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </a>
     </div>
   </div>
@@ -642,7 +714,7 @@ const SKILLS = [
   {cmd:'ts:imagegen-mobile',name:'Image Gen Mobile',desc:'Generate premium mobile app UI images.',cat:'design'},
   {cmd:'ts:brandkit',name:'Brand Kit',desc:'Brand-kit boards, logo systems, identity decks.',cat:'design'},
   {cmd:'/impeccable audit',name:'Impeccable Audit',desc:'Score UI against 23 design heuristics.',cat:'design'},
-  {cmd:'/impeccable polish',name:'Impeccable Polish',desc:'Micro-detail polish — spacing, alignment, typography.',cat:'design'},
+  {cmd:'/impeccable polish',name:'Impeccable Polish',desc:'Micro-detail polish: spacing, alignment, typography.',cat:'design'},
   {cmd:'/impeccable bolder',name:'Make Bolder',desc:'Make bland designs bold and striking.',cat:'design'},
   {cmd:'/impeccable animate',name:'Add Animation',desc:'Add motion and micro-interactions.',cat:'design'},
   {cmd:'/impeccable colorize',name:'Colorize',desc:'Apply a strong, intentional color system.',cat:'design'},
@@ -736,8 +808,9 @@ function renderSkills(cat) {
   const grid = document.getElementById('skills-grid');
   grid.innerHTML = '';
   filtered.forEach(s => {
-    const card = document.createElement('div');
+    const card = document.createElement('article');
     card.className = 'skill-card';
+    card.setAttribute('role', 'listitem');
     const top = document.createElement('div');
     top.className = 'sc-top';
     const cmd = document.createElement('span');
@@ -759,8 +832,12 @@ function renderSkills(cat) {
 }
 
 function filterSkills(cat, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
   btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
   renderSkills(cat);
 }
 
@@ -769,8 +846,8 @@ function renderPlugins() {
   PLUGINS.forEach((p, i) => {
     const card = document.createElement('div');
     card.className = 'plugin-card';
-    card.setAttribute('data-anim','');
-    card.setAttribute('data-delay', String(Math.min(i * 50, 300)));
+    card.setAttribute('data-anim', '');
+    card.dataset.delay = String(Math.min(i * 50, 300));
     const prefix = document.createElement('span');
     prefix.className = 'plugin-prefix';
     prefix.textContent = p.prefix;
@@ -790,24 +867,28 @@ renderPlugins();
 
 // Platform tabs
 function showPlat(id, btn) {
-  document.querySelectorAll('.plat-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.plat-tab').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+  });
   document.querySelectorAll('.plat-content').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
   const el = document.getElementById('plat-' + id);
   if (el) el.classList.add('active');
 }
 
-// Copy code block
+// Copy code block — reads from data-cmd attribute, not DOM text
 function copyBlock(btn) {
   const block = btn.closest('.code-block');
-  const text = block.innerText.replace('Copy\n','').replace('Copied\n','').trim();
+  const text = block.dataset.cmd || '';
   navigator.clipboard.writeText(text).then(() => {
     btn.textContent = 'Copied';
     setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
   });
 }
 
-// Chat agent — safe DOM building
+// Chat agent
 const chatMsgs = document.getElementById('chat-msgs');
 
 function makeMsg(who, lines) {
@@ -815,6 +896,7 @@ function makeMsg(who, lines) {
   row.className = 'msg-row' + (who === 'user' ? ' user-row' : '');
   const av = document.createElement('div');
   av.className = 'msg-av' + (who === 'user' ? ' u' : '');
+  av.setAttribute('aria-hidden', 'true');
   av.textContent = who === 'user' ? 'U' : 'S';
   const bubble = document.createElement('div');
   bubble.className = 'msg-bubble';
@@ -850,7 +932,7 @@ function addMsg(who, lines) {
   chatMsgs.scrollTop = chatMsgs.scrollHeight;
 }
 
-addMsg('bot', [{type:'text',v:'Hi! Describe what you want to do and I\'ll find the exact skill for you. Try: "review my code", "build a UI", or "debug a bug".'}]);
+addMsg('bot', [{type:'text', v:'Hi! Describe what you want to do and I\'ll find the exact skill for you. Try: "review my code", "build a UI", or "debug a bug".'}]);
 
 function findSkill(q) {
   const lower = q.toLowerCase();
