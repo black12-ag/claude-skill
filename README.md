@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="website/logo.png" alt="Claude Skill Pack" width="320">
+
 # Claude Code — Full Skill Setup
 
 **[🌐 Skill Browser](https://skills.shegerpay.com/)** &bull; **[GitHub](https://github.com/black12-ag/claude-skill)** &bull; **[Portfolio](https://portfolio.ethio-viral.com/)**

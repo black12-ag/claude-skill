@@ -9,13 +9,16 @@
   <meta property="og:description" content="180+ skills, 17 plugins. One command installs everything on any Mac.">
   <meta property="og:url" content="https://skills.shegerpay.com">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://skills.shegerpay.com/logo.png">
+  <meta name="twitter:image" content="https://skills.shegerpay.com/logo.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Claude Skill Pack — Every Skill. One Command.">
   <meta name="twitter:description" content="180+ skills, 17 plugins. One command installs everything on any Mac.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2316a34a'/%3E%3Ctext x='16' y='22' font-family='system-ui' font-size='18' font-weight='700' fill='white' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
 
   <style>
     :root {
@@ -71,19 +74,11 @@
       border-bottom:1px solid var(--line);
     }
     .nav-logo {
-      display:flex; align-items:center; gap:10px;
-      font-weight:700; font-size:.95rem; letter-spacing:-.02em; color:var(--ink);
+      display:flex; align-items:center;
     }
-    .logo-mark {
-      width:32px; height:32px; border-radius:9px;
-      background:var(--accent); display:flex; align-items:center; justify-content:center;
-      flex-shrink:0; position:relative;
-    }
-    .logo-mark svg { width:18px; height:18px; }
-    .logo-pulse {
-      position:absolute; inset:-3px; border-radius:12px;
-      border:1.5px solid var(--accent);
-      animation:pulse-ring 2.5s cubic-bezier(.2,.8,.2,1) infinite;
+    .nav-logo-img {
+      height:36px; width:auto; object-fit:contain;
+      display:block;
     }
     .nav-links { display:flex; align-items:center; gap:6px; }
     .nav-a {
@@ -378,13 +373,7 @@
 <!-- Nav -->
 <nav>
   <a href="/" class="nav-logo">
-    <div class="logo-mark" aria-hidden="true">
-      <div class="logo-pulse"></div>
-      <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
-        <path d="M9 2L3 7v9h4v-5h4v5h4V7L9 2z" fill="white" stroke="white" stroke-width=".5"/>
-      </svg>
-    </div>
-    Claude Skill Pack
+    <img src="logo.png" alt="Claude Skill Pack" class="nav-logo-img">
   </a>
   <div class="nav-links">
     <a href="#platforms" class="nav-a">Install</a>
@@ -674,10 +663,7 @@
   <div class="footer-inner">
     <div>
       <div class="footer-logo">
-        <div class="footer-logo-mark" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 2L3 7v9h4v-5h4v5h4V7L9 2z" fill="white"/></svg>
-        </div>
-        Claude Skill Pack
+        <img src="logo.png" alt="Claude Skill Pack" style="height:28px;width:auto;object-fit:contain;">
       </div>
       <div class="footer-copy">MIT License · Built by <a href="https://portfolio.ethio-viral.com/" style="color:var(--accent)" target="_blank" rel="noopener">Munir</a> · <a href="https://skills.shegerpay.com" style="color:var(--accent)">skills.shegerpay.com</a></div>
     </div>
