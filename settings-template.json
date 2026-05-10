@@ -1,0 +1,60 @@
+{
+  "model": "sonnet",
+  "effortLevel": "medium",
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "Notion@claude-plugins-official": true,
+    "plugin-dev@claude-plugins-official": true,
+    "playground@claude-plugins-official": true,
+    "supabase@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "coderabbit@claude-plugins-official": true,
+    "claude-mem@thedotmack": true,
+    "superpowers@superpowers-dev": true,
+    "impeccable@impeccable": true,
+    "ts@taste-skills": true,
+    "50@ruflo": true
+  },
+  "extraKnownMarketplaces": {
+    "career-ops": {
+      "source": { "source": "github", "repo": "santifer/career-ops" }
+    },
+    "impeccable": {
+      "source": { "source": "github", "repo": "pbakaus/impeccable" }
+    },
+    "superpowers-dev": {
+      "source": { "source": "github", "repo": "obra/superpowers" }
+    },
+    "cwb-plugins": {
+      "source": { "source": "github", "repo": "Code-with-Beto/skills" }
+    },
+    "taste-skills": {
+      "source": { "source": "github", "repo": "Leonxlnx/taste-skill" }
+    },
+    "ruflo": {
+      "source": { "source": "github", "repo": "ruvnet/ruflo" }
+    },
+    "thedotmack": {
+      "source": { "source": "github", "repo": "thedotmack/claude-mem" }
+    }
+  },
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(git clone:*)",
+      "Bash(git submodule:*)",
+      "Bash(python3:*)",
+      "Bash(curl:*)",
+      "Bash(echo:*)",
+      "Bash(env:*)",
+      "Bash(gh api:*)"
+    ]
+  }
+}
