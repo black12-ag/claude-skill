@@ -1,0 +1,8 @@
+name = "claude-skill-agent"
+main = "agent.js"
+compatibility_date = "2024-01-01"
+account_id = "b18869a0dec6b679f4aac5e1e79b6fb8"
+
+routes = [
+  { pattern = "skills.shegerpay.com/agent*", zone_name = "shegerpay.com" }
+]
