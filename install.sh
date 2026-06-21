@@ -67,6 +67,41 @@ TARGETS="$(echo "$TARGETS" | xargs)"
 [ -z "$TARGETS" ] && TARGETS="claude codex gemini antigravity"
 info "Installing for: ${BOLD}$TARGETS${NC}"
 
+# ── Choose which skills/plugins (simple — default is everything) ─
+# The 128 shared skills are always copied (tiny text files). This picks the
+# heavier Claude Code plugins. Override non-interactively with CLAUDE_SKILL_PACKS.
+ALL_PLUGINS="superpowers@claude-plugins-official frontend-design@claude-plugins-official context7@claude-plugins-official code-review@claude-plugins-official security-guidance@claude-plugins-official supabase@claude-plugins-official plugin-dev@claude-plugins-official playground@claude-plugins-official claude-code-setup@claude-plugins-official coderabbit@claude-plugins-official swift-lsp@claude-plugins-official vercel@claude-plugins-official claude-mem@thedotmack superpowers@superpowers-dev impeccable@impeccable taste-skill@taste-skill ruflo-core@ruflo ruflo-goals@ruflo ruflo-sparc@ruflo ruflo-swarm@ruflo"
+PLUGINS_TO_INSTALL="$ALL_PLUGINS"
+if echo "$TARGETS" | grep -q claude; then
+  header "Which skills?"
+  echo "    1) Everything          — all 20 plugins + 128 skills   (recommended)"
+  echo "    2) Design & UI         — frontend-design, impeccable, taste-skill"
+  echo "    3) Coding              — superpowers, plugin-dev, context7, swift-lsp"
+  echo "    4) Review & Security   — code-review, coderabbit, security-guidance"
+  echo "    5) Agents & Memory     — ruflo suite, claude-mem, superpowers-dev"
+  echo "    6) Data & Deploy       — supabase, vercel"
+  echo -e "    ${DIM}(all 128 skills are always included; this picks the plugins)${NC}"
+  echo ""
+  PACKS="${CLAUDE_SKILL_PACKS:-}"
+  if [ -z "$PACKS" ] && [ -r /dev/tty ]; then
+    printf "  Numbers (e.g. \"2 3\") or 1 for everything [1]: "
+    read -r PACKS < /dev/tty || PACKS=""
+  fi
+  PACKS="${PACKS:-1}"
+  if echo "$PACKS" | grep -qiE '(^|[^0-9])1([^0-9]|$)|all|every'; then
+    PLUGINS_TO_INSTALL="$ALL_PLUGINS"
+  else
+    PLUGINS_TO_INSTALL="playground@claude-plugins-official claude-code-setup@claude-plugins-official"  # base
+    echo "$PACKS" | grep -q 2 && PLUGINS_TO_INSTALL="$PLUGINS_TO_INSTALL frontend-design@claude-plugins-official impeccable@impeccable taste-skill@taste-skill"
+    echo "$PACKS" | grep -q 3 && PLUGINS_TO_INSTALL="$PLUGINS_TO_INSTALL superpowers@claude-plugins-official plugin-dev@claude-plugins-official context7@claude-plugins-official swift-lsp@claude-plugins-official"
+    echo "$PACKS" | grep -q 4 && PLUGINS_TO_INSTALL="$PLUGINS_TO_INSTALL code-review@claude-plugins-official coderabbit@claude-plugins-official security-guidance@claude-plugins-official"
+    echo "$PACKS" | grep -q 5 && PLUGINS_TO_INSTALL="$PLUGINS_TO_INSTALL ruflo-core@ruflo ruflo-goals@ruflo ruflo-sparc@ruflo ruflo-swarm@ruflo claude-mem@thedotmack superpowers@superpowers-dev"
+    echo "$PACKS" | grep -q 6 && PLUGINS_TO_INSTALL="$PLUGINS_TO_INSTALL supabase@claude-plugins-official vercel@claude-plugins-official"
+  fi
+  PLUGINS_TO_INSTALL="$(echo "$PLUGINS_TO_INSTALL" | xargs)"
+  info "Plugins: $(echo "$PLUGINS_TO_INSTALL" | wc -w | tr -d ' ') selected"
+fi
+
 # ── Shared helpers ────────────────────────────────────────────
 
 # Universal skills dir — read by Claude Code, Codex, Gemini CLI, Antigravity, Copilot.
@@ -129,17 +164,9 @@ install_claude_code() {
     add_mp ruflo           "ruvnet/ruflo"
     claude plugin marketplace update >/dev/null 2>&1 || true
 
-    info "Installing 20 plugins..."
+    info "Installing $(echo "$PLUGINS_TO_INSTALL" | wc -w | tr -d ' ') plugins..."
     inst() { claude plugin list 2>/dev/null | grep -q "${1%%@*}" || { claude plugin install "$1" >/dev/null 2>&1 && echo "    ✓ $1"; } || warn "    failed: $1"; }
-    for p in superpowers@claude-plugins-official frontend-design@claude-plugins-official \
-             context7@claude-plugins-official code-review@claude-plugins-official \
-             security-guidance@claude-plugins-official supabase@claude-plugins-official \
-             plugin-dev@claude-plugins-official playground@claude-plugins-official \
-             claude-code-setup@claude-plugins-official coderabbit@claude-plugins-official \
-             swift-lsp@claude-plugins-official vercel@claude-plugins-official \
-             claude-mem@thedotmack superpowers@superpowers-dev impeccable@impeccable \
-             taste-skill@taste-skill ruflo-core@ruflo ruflo-goals@ruflo \
-             ruflo-sparc@ruflo ruflo-swarm@ruflo; do inst "$p"; done
+    for p in $PLUGINS_TO_INSTALL; do inst "$p"; done
   fi
 
   # custom flat-file skills are Claude-Code-specific → ~/.claude/skills
