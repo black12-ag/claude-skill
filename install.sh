@@ -1,189 +1,201 @@
 #!/usr/bin/env bash
 # ================================================================
-#  Claude Code — Full Setup & Restore Script
+#  Claude Skill Pack — Multi-IDE Installer
 #  Repo: https://github.com/black12-ag/claude-skill
 #
-#  One-command install on any new Mac:
+#  One command on any Mac:
 #    curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash
 #
-#  Or after cloning:
-#    bash install.sh
+#  Installs the pack into the editor / CLI you choose — Claude Code,
+#  Codex CLI, Gemini CLI, or Antigravity (or all of them). Skills live
+#  in the universal ~/.agents/skills (every tool reads it); each tool
+#  also gets its own instructions file. Everything self-updates daily.
+#
+#  Non-interactive override:  CLAUDE_SKILL_TARGETS="claude,codex" bash install.sh
 # ================================================================
+set -uo pipefail
 
-set -e
-
-GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; BOLD='\033[1m'; NC='\033[0m'
-info()    { echo -e "${GREEN}[✓]${NC} $1"; }
-warn()    { echo -e "${YELLOW}[!]${NC} $1"; }
-header()  { echo -e "\n${BOLD}${GREEN}━━ $1 ━━${NC}"; }
-err()     { echo -e "${RED}[✗]${NC} $1"; }
-
+GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; BOLD='\033[1m'; DIM='\033[2m'; NC='\033[0m'
+info()   { echo -e "${GREEN}[✓]${NC} $1"; }
+warn()   { echo -e "${YELLOW}[!]${NC} $1"; }
+err()    { echo -e "${RED}[✗]${NC} $1"; }
+header() { echo -e "\n${BOLD}${GREEN}━━ $1 ━━${NC}"; }
+has()    { command -v "$1" >/dev/null 2>&1; }
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+GRAPHIFY_GIT="git+https://github.com/safishamsi/graphify.git@v8"
 
-echo -e "${BOLD}"
-echo "  ╔══════════════════════════════════════════╗"
-echo "  ║   Claude Code — Full Skill Installer     ║"
-echo "  ║   github.com/black12-ag/claude-skill     ║"
-echo "  ╚══════════════════════════════════════════╝"
+echo -e "${BOLD}${GREEN}"
+echo "  ╔══════════════════════════════════════════════╗"
+echo "  ║   Claude Skill Pack — Multi-IDE Installer    ║"
+echo "  ║   github.com/black12-ag/claude-skill         ║"
+echo "  ╚══════════════════════════════════════════════╝"
 echo -e "${NC}"
 
-# ── Step 0: Install Claude Code if missing ───────────────────
-header "Step 0: Claude Code"
-if command -v claude &>/dev/null; then
-  info "Claude Code already installed ($(claude --version 2>/dev/null || echo 'unknown version'))"
+# ── Detect which tools are present ────────────────────────────
+det() { has "$1" && echo "on" || echo "off"; }
+D_CLAUDE=$(det claude); D_CODEX=$(det codex); D_GEMINI=$(det gemini)
+if has agy || [ -d "$HOME/.gemini/antigravity" ] || [ -d "$HOME/.antigravity" ]; then D_AGY="on"; else D_AGY="off"; fi
+
+# ── Choose install targets (works under curl|bash via /dev/tty) ─
+header "Where should the skills go?"
+echo -e "  ${DIM}Detected:${NC}  Claude Code[$D_CLAUDE]  Codex[$D_CODEX]  Gemini CLI[$D_GEMINI]  Antigravity[$D_AGY]"
+echo ""
+echo "    1) Claude Code   — plugins + skills + graphify + CLAUDE.md"
+echo "    2) Codex CLI     — skills + graphify + AGENTS.md"
+echo "    3) Gemini CLI    — skills + graphify + GEMINI.md"
+echo "    4) Antigravity   — skills + graphify"
+echo "    5) All of them   (recommended)"
+echo ""
+
+CHOICE="${CLAUDE_SKILL_TARGETS:-}"
+if [ -z "$CHOICE" ] && [ -r /dev/tty ]; then
+  printf "  Pick one or more (e.g. \"1 3\") or 5 for all [5]: "
+  read -r CHOICE < /dev/tty || CHOICE=""
+fi
+CHOICE="${CHOICE:-5}"
+
+TARGETS=""
+if echo "$CHOICE" | grep -qiE '(^|[^0-9])5([^0-9]|$)|all'; then
+  TARGETS="claude codex gemini antigravity"
 else
-  warn "Claude Code not found. Installing..."
-  if command -v npm &>/dev/null; then
-    npm install -g @anthropic-ai/claude-code
-    info "Claude Code installed via npm"
-  else
-    err "npm not found. Install Node.js first: https://nodejs.org"
-    err "Then re-run this script."
-    exit 1
+  echo "$CHOICE" | grep -qiE '(^|[^0-9])1([^0-9]|$)|claude'      && TARGETS="$TARGETS claude"
+  echo "$CHOICE" | grep -qiE '(^|[^0-9])2([^0-9]|$)|codex'       && TARGETS="$TARGETS codex"
+  echo "$CHOICE" | grep -qiE '(^|[^0-9])3([^0-9]|$)|gemini'      && TARGETS="$TARGETS gemini"
+  echo "$CHOICE" | grep -qiE '(^|[^0-9])4([^0-9]|$)|antigravity|agy' && TARGETS="$TARGETS antigravity"
+fi
+TARGETS="$(echo "$TARGETS" | xargs)"
+[ -z "$TARGETS" ] && TARGETS="claude codex gemini antigravity"
+info "Installing for: ${BOLD}$TARGETS${NC}"
+
+# ── Shared helpers ────────────────────────────────────────────
+
+# Universal skills dir — read by Claude Code, Codex, Gemini CLI, Antigravity, Copilot.
+sync_agent_skills() {
+  [ -d "$SCRIPT_DIR/agent-skills" ] || { warn "no agent-skills/ in pack"; return; }
+  mkdir -p "$HOME/.agents/skills"
+  cp -R "$SCRIPT_DIR/agent-skills/." "$HOME/.agents/skills/"
+  info "  Skills → ~/.agents/skills ($(ls "$SCRIPT_DIR/agent-skills" | wc -l | tr -d ' ') skills, read by all tools)"
+}
+
+# Append a managed block to a tool's instructions file (idempotent, backs up first).
+write_instructions() {
+  local file="$1" src="$SCRIPT_DIR/CLAUDE.md"
+  [ -f "$src" ] || return 0
+  mkdir -p "$(dirname "$file")"
+  if [ -f "$file" ]; then
+    cp "$file" "$file.bak" 2>/dev/null
+    awk '/^# >>> claude-skill-pack >>>/{skip=1} !skip; /^# <<< claude-skill-pack <<</{skip=0}' "$file" > "$file.tmp" && mv "$file.tmp" "$file"
   fi
-fi
+  { echo ""; echo "# >>> claude-skill-pack >>>"; cat "$src"; echo "# <<< claude-skill-pack <<<"; } >> "$file"
+  info "  Instructions → $file"
+}
 
-# ── Step 1: Claude Login ──────────────────────────────────────
-header "Step 1: Claude Login"
-if claude auth status &>/dev/null 2>&1; then
-  info "Already logged in to Claude"
-else
-  warn "Not logged in. Starting Claude login..."
-  echo ""
-  echo "  → A browser window will open. Log in with your Anthropic account."
-  echo "  → After login, return here and press Enter to continue."
-  echo ""
-  claude login || warn "Login skipped — run 'claude login' manually if needed"
-fi
-
-# ── Step 2: Add Marketplaces ──────────────────────────────────
-header "Step 2: Marketplaces"
-
-# Marketplace name is taken from each repo's .claude-plugin/marketplace.json
-# ("name" field) — the CLI has no --name flag. The $name arg below must match
-# that manifest name so the "already added" check works and plugin@marketplace
-# references resolve.
-add_marketplace() {
-  local name="$1" repo="$2"
-  if claude plugin marketplace list 2>/dev/null | grep -q "$name"; then
-    warn "Marketplace '$name' already added, skipping"
+# graphify: a uv tool (CLI + MCP) usable from every editor. Install once.
+GRAPHIFY_DONE=0
+install_graphify() {
+  [ "$GRAPHIFY_DONE" = "1" ] && return; GRAPHIFY_DONE=1
+  if has uv; then
+    info "  Installing graphify (from git)..."
+    if uv tool install --force "graphifyy @ $GRAPHIFY_GIT" >/dev/null 2>&1; then
+      has graphify && graphify install >/dev/null 2>&1
+      info "  graphify ready"
+    else
+      warn "  graphify install failed (continuing)"
+    fi
   else
-    info "  Adding: $name ($repo)"
-    claude plugin marketplace add "$repo" 2>/dev/null \
-      || warn "  Could not add $name (may need manual add)"
+    warn "  uv not found — skipping graphify. Install: curl -LsSf https://astral.sh/uv/install.sh | sh"
   fi
 }
 
-add_marketplace "thedotmack"      "thedotmack/claude-mem"
-add_marketplace "superpowers-dev" "obra/superpowers"
-add_marketplace "career-ops"      "santifer/career-ops"
-add_marketplace "cwb-plugins"     "Code-with-Beto/skills"
-add_marketplace "impeccable"      "pbakaus/impeccable"
-add_marketplace "taste-skill"     "Leonxlnx/taste-skill"
-add_marketplace "ruflo"           "ruvnet/ruflo"
-
-info "Updating all marketplace indexes..."
-claude plugin marketplace update 2>/dev/null || warn "Marketplace update had issues (continuing)"
-
-# ── Step 3: Install Plugins ───────────────────────────────────
-header "Step 3: Plugins (20 total)"
-
-install_plugin() {
-  local plugin="$1"
-  if claude plugin list 2>/dev/null | grep -q "${plugin%%@*}"; then
-    warn "  Already installed: $plugin"
-  else
-    info "  Installing: $plugin"
-    claude plugin install "$plugin" 2>/dev/null \
-      || warn "  Failed: $plugin (try: claude plugin install $plugin)"
+# ── Target: Claude Code (full — plugins + skills + graphify) ───
+install_claude_code() {
+  header "Claude Code"
+  if ! has claude; then
+    if has npm; then warn "claude not found — installing via npm"; npm install -g @anthropic-ai/claude-code >/dev/null 2>&1 || warn "npm install failed"
+    else warn "claude + npm missing — install Node.js then re-run"; fi
   fi
+  if has claude; then
+    claude auth status >/dev/null 2>&1 || { warn "Not logged in — opening login"; claude login </dev/tty || warn "run 'claude login' manually"; }
+
+    info "Adding marketplaces..."
+    add_mp() { claude plugin marketplace list 2>/dev/null | grep -q "$1" || claude plugin marketplace add "$2" >/dev/null 2>&1 || warn "  add $1 failed"; }
+    add_mp thedotmack      "thedotmack/claude-mem"
+    add_mp superpowers-dev "obra/superpowers"
+    add_mp career-ops      "santifer/career-ops"
+    add_mp cwb-plugins     "Code-with-Beto/skills"
+    add_mp impeccable      "pbakaus/impeccable"
+    add_mp taste-skill     "Leonxlnx/taste-skill"
+    add_mp ruflo           "ruvnet/ruflo"
+    claude plugin marketplace update >/dev/null 2>&1 || true
+
+    info "Installing 20 plugins..."
+    inst() { claude plugin list 2>/dev/null | grep -q "${1%%@*}" || { claude plugin install "$1" >/dev/null 2>&1 && echo "    ✓ $1"; } || warn "    failed: $1"; }
+    for p in superpowers@claude-plugins-official frontend-design@claude-plugins-official \
+             context7@claude-plugins-official code-review@claude-plugins-official \
+             security-guidance@claude-plugins-official supabase@claude-plugins-official \
+             plugin-dev@claude-plugins-official playground@claude-plugins-official \
+             claude-code-setup@claude-plugins-official coderabbit@claude-plugins-official \
+             swift-lsp@claude-plugins-official vercel@claude-plugins-official \
+             claude-mem@thedotmack superpowers@superpowers-dev impeccable@impeccable \
+             taste-skill@taste-skill ruflo-core@ruflo ruflo-goals@ruflo \
+             ruflo-sparc@ruflo ruflo-swarm@ruflo; do inst "$p"; done
+  fi
+
+  # custom flat-file skills are Claude-Code-specific → ~/.claude/skills
+  mkdir -p "$HOME/.claude/skills"
+  [ -d "$SCRIPT_DIR/claude-skills" ] && cp -R "$SCRIPT_DIR/claude-skills/." "$HOME/.claude/skills/" && \
+    info "  Custom skills → ~/.claude/skills ($(ls "$SCRIPT_DIR/claude-skills"|wc -l|tr -d ' '))"
+  sync_agent_skills
+  write_instructions "$HOME/CLAUDE.md"
+  # settings template (never clobber existing)
+  if [ -f "$HOME/.claude/settings.json" ]; then
+    cp "$SCRIPT_DIR/settings-template.json" "$HOME/.claude/settings-template.json" 2>/dev/null
+  else
+    cp "$SCRIPT_DIR/settings-template.json" "$HOME/.claude/settings.json" 2>/dev/null && info "  settings.json created"
+  fi
+  install_graphify
 }
 
-# Official plugins
-install_plugin "superpowers@claude-plugins-official"
-install_plugin "frontend-design@claude-plugins-official"
-install_plugin "context7@claude-plugins-official"
-install_plugin "code-review@claude-plugins-official"
-install_plugin "security-guidance@claude-plugins-official"
-install_plugin "supabase@claude-plugins-official"
-install_plugin "plugin-dev@claude-plugins-official"
-install_plugin "playground@claude-plugins-official"
-install_plugin "claude-code-setup@claude-plugins-official"
-install_plugin "coderabbit@claude-plugins-official"
-install_plugin "swift-lsp@claude-plugins-official"
-install_plugin "vercel@claude-plugins-official"
+# ── Target: Codex CLI ─────────────────────────────────────────
+install_codex() {
+  header "Codex CLI"
+  has codex || warn "codex not detected — installing skills anyway (Codex reads ~/.agents/skills)"
+  sync_agent_skills
+  write_instructions "$HOME/.codex/AGENTS.md"
+  install_graphify
+}
 
-# 3rd-party plugins
-install_plugin "claude-mem@thedotmack"
-install_plugin "superpowers@superpowers-dev"
-install_plugin "impeccable@impeccable"
-install_plugin "taste-skill@taste-skill"
-install_plugin "ruflo-core@ruflo"
-install_plugin "ruflo-goals@ruflo"
-install_plugin "ruflo-sparc@ruflo"
-install_plugin "ruflo-swarm@ruflo"
+# ── Target: Gemini CLI ────────────────────────────────────────
+install_gemini() {
+  header "Gemini CLI"
+  has gemini || warn "gemini not detected — installing skills anyway (Gemini reads ~/.agents/skills)"
+  sync_agent_skills
+  write_instructions "$HOME/.gemini/GEMINI.md"
+  install_graphify
+}
 
-# ── Step 3.5: Graphify (knowledge-graph CLI + skill) ─────────
-header "Graphify"
-if command -v uv >/dev/null 2>&1; then
-  info "Installing graphify from git (latest)..."
-  if uv tool install --force "graphifyy @ git+https://github.com/safishamsi/graphify.git@v8" 2>/dev/null; then
-    command -v graphify >/dev/null 2>&1 && graphify install 2>/dev/null
-    info "graphify installed"
-  else
-    warn "graphify install failed (continuing)"
-  fi
-else
-  warn "uv not found — skipping graphify. Install uv first: curl -LsSf https://astral.sh/uv/install.sh | sh"
-fi
+# ── Target: Antigravity ───────────────────────────────────────
+install_antigravity() {
+  header "Antigravity"
+  sync_agent_skills            # Antigravity surfaces skills from ~/.agents/skills
+  write_instructions "$HOME/.gemini/GEMINI.md"   # Antigravity (Gemini-based) shares GEMINI.md
+  install_graphify
+}
 
-# ── Step 4: Copy Custom Skill Files ──────────────────────────
-header "Step 4: Custom Skills"
-mkdir -p "$HOME/.claude/skills"
-mkdir -p "$HOME/.agents/skills"
+# ── Run chosen targets ────────────────────────────────────────
+for t in $TARGETS; do
+  case "$t" in
+    claude)      install_claude_code ;;
+    codex)       install_codex ;;
+    gemini)      install_gemini ;;
+    antigravity) install_antigravity ;;
+  esac
+done
 
-if [ -d "$SCRIPT_DIR/claude-skills" ]; then
-  cp -r "$SCRIPT_DIR/claude-skills/." "$HOME/.claude/skills/"
-  count=$(ls "$SCRIPT_DIR/claude-skills/" | wc -l | tr -d ' ')
-  info "Copied $count skill files → ~/.claude/skills/"
-else
-  warn "No claude-skills/ folder found"
-fi
-
-if [ -d "$SCRIPT_DIR/agent-skills" ]; then
-  cp -r "$SCRIPT_DIR/agent-skills/." "$HOME/.agents/skills/"
-  count=$(ls "$SCRIPT_DIR/agent-skills/" | wc -l | tr -d ' ')
-  info "Copied $count agent skills → ~/.agents/skills/"
-else
-  warn "No agent-skills/ folder found"
-fi
-
-# ── Step 5: CLAUDE.md (Global Instructions) ───────────────────
-header "Step 5: Global Instructions"
-if [ -f "$SCRIPT_DIR/CLAUDE.md" ]; then
-  cp "$SCRIPT_DIR/CLAUDE.md" "$HOME/CLAUDE.md"
-  info "Installed CLAUDE.md → ~/CLAUDE.md"
-fi
-
-# ── Step 6: Apply Settings Template ──────────────────────────
-header "Step 6: Settings"
-SETTINGS_FILE="$HOME/.claude/settings.json"
-
-if [ -f "$SETTINGS_FILE" ]; then
-  warn "settings.json already exists — merging plugin list only"
-  # Just copy template as reference; don't overwrite user settings
-  cp "$SCRIPT_DIR/settings-template.json" "$HOME/.claude/settings-template.json"
-  info "Template saved to ~/.claude/settings-template.json (review manually)"
-else
-  cp "$SCRIPT_DIR/settings-template.json" "$SETTINGS_FILE"
-  info "Created ~/.claude/settings.json from template"
-fi
-
-# ── Step 7: Auto-Update (self-updating, no manual work) ───────
-header "Step 7: Auto-Update"
+# ── Auto-update (self-updating, no manual work) ───────────────
+header "Auto-Update"
 chmod +x "$SCRIPT_DIR/update.sh" 2>/dev/null
 if [ "$(uname)" = "Darwin" ]; then
-  # macOS: a LaunchAgent runs update.sh daily at 10:00.
   PLIST="$HOME/Library/LaunchAgents/com.claude-skill.update.plist"
   mkdir -p "$HOME/Library/LaunchAgents"
   cat > "$PLIST" <<PLISTEOF
@@ -193,10 +205,7 @@ if [ "$(uname)" = "Darwin" ]; then
 <dict>
   <key>Label</key><string>com.claude-skill.update</string>
   <key>ProgramArguments</key>
-  <array>
-    <string>/bin/bash</string>
-    <string>$SCRIPT_DIR/update.sh</string>
-  </array>
+  <array><string>/bin/bash</string><string>$SCRIPT_DIR/update.sh</string></array>
   <key>StartCalendarInterval</key>
   <dict><key>Hour</key><integer>10</integer><key>Minute</key><integer>0</integer></dict>
   <key>StandardOutPath</key><string>$SCRIPT_DIR/update.log</string>
@@ -205,39 +214,20 @@ if [ "$(uname)" = "Darwin" ]; then
 </plist>
 PLISTEOF
   launchctl unload "$PLIST" 2>/dev/null || true
-  if launchctl load "$PLIST" 2>/dev/null; then
-    info "Auto-update ON — runs daily @ 10:00 (log: $SCRIPT_DIR/update.log)"
-    info "  Disable: launchctl unload $PLIST"
-  else
-    warn "Could not load LaunchAgent — enable manually: launchctl load $PLIST"
-  fi
+  launchctl load "$PLIST" 2>/dev/null && info "Auto-update ON — daily @ 10:00 (disable: launchctl unload $PLIST)" || warn "load failed: launchctl load $PLIST"
 else
-  # Linux/other: cron entry (idempotent).
-  CRON_LINE="0 10 * * * /bin/bash $SCRIPT_DIR/update.sh >> $SCRIPT_DIR/update.log 2>&1"
-  if ( crontab -l 2>/dev/null | grep -v 'claude-skill.*update.sh'; echo "$CRON_LINE" ) | crontab - 2>/dev/null; then
-    info "Auto-update ON via cron — runs daily @ 10:00"
-  else
-    warn "Could not set cron. Run manually anytime: bash $SCRIPT_DIR/update.sh"
-  fi
+  LINE="0 10 * * * /bin/bash $SCRIPT_DIR/update.sh >> $SCRIPT_DIR/update.log 2>&1"
+  ( crontab -l 2>/dev/null | grep -v 'claude-skill.*update.sh'; echo "$LINE" ) | crontab - 2>/dev/null \
+    && info "Auto-update ON via cron — daily @ 10:00" || warn "Run manually: bash $SCRIPT_DIR/update.sh"
 fi
-info "Update now anytime with: bash $SCRIPT_DIR/update.sh"
 
 # ── Done ──────────────────────────────────────────────────────
 echo ""
 echo -e "${BOLD}${GREEN}╔══════════════════════════════════════════════════╗${NC}"
-echo -e "${BOLD}${GREEN}║  ✓ Setup complete! Restart Claude Code now.      ║${NC}"
+echo -e "${BOLD}${GREEN}║  ✓ Done! Restart your editor to load everything. ║${NC}"
 echo -e "${BOLD}${GREEN}╚══════════════════════════════════════════════════╝${NC}"
 echo ""
-echo "  Quick commands after restart:"
-echo "  /help        — see all commands"
-echo "  /menu        — browse all skills"
-echo "  /auto <task> — smart skill picker"
-echo "  /seo         — SEO tools"
-echo "  /build       — build something"
-echo "  /ship        — deploy & ship"
-echo "  /review      — code review"
-echo "  /qa          — run tests"
-echo "  /graphify    — code knowledge graph"
-echo ""
-echo "  Self-updates daily — or run now: bash ~/.claude-skill-setup/update.sh"
+echo "  Installed for: $TARGETS"
+echo "  Skills live in ~/.agents/skills (shared by every tool)."
+echo "  Self-updates daily — or run now: bash $SCRIPT_DIR/update.sh"
 echo ""
