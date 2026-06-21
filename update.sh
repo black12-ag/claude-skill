@@ -44,7 +44,10 @@ if command -v claude >/dev/null 2>&1; then
   info "Updating marketplaces..."
   claude plugin marketplace update >/dev/null 2>&1 || warn "marketplace update had issues"
   info "Updating installed plugins..."
-  claude plugin list 2>/dev/null | grep -oE '[A-Za-z0-9_.-]+@[A-Za-z0-9_.-]+' | sort -u | while read -r p; do
+  # Only real marketplace plugins. Skip @skills-dir (local skills — these are
+  # synced by the copy step below, not installed from a marketplace).
+  claude plugin list 2>/dev/null | grep -oE '[A-Za-z0-9_.-]+@[A-Za-z0-9_.-]+' \
+    | grep -v '@skills-dir' | sort -u | while read -r p; do
     if claude plugin update "$p" >/dev/null 2>&1; then echo "    ✓ $p"; else warn "    could not update $p"; fi
   done
 else
