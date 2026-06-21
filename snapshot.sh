@@ -38,6 +38,13 @@ mkdir -p "$SCRIPT_DIR/agent-skills"
 rsync -a --exclude='README.md' --exclude='CONTRIBUTING.md' \
   "$HOME/.agents/skills/" "$SCRIPT_DIR/agent-skills/"
 
+# De-submodule: strip nested .git so skills commit as normal files, not empty
+# gitlinks (otherwise they clone as empty dirs for everyone).
+find "$SCRIPT_DIR/agent-skills" -mindepth 2 -name .git -prune -exec rm -rf {} + 2>/dev/null || true
+# Drop empty skill dirs (e.g. dirs that only had a README, which we exclude) —
+# git cannot track empty dirs, so they would vanish on clone anyway.
+find "$SCRIPT_DIR/agent-skills" -mindepth 1 -maxdepth 1 -type d -empty -delete 2>/dev/null || true
+
 count=$(ls "$SCRIPT_DIR/agent-skills/" | wc -l | tr -d ' ')
 info "  Copied $count agent skill entries"
 

@@ -1,0 +1,40 @@
+{
+  "name": "stitch",
+  "version": "0.1.0",
+  "description": "Codex plugin wrapper for the Google Stitch remote MCP server.",
+  "author": {
+    "name": "Munir",
+    "email": "[TODO: author@example.com]",
+    "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill"
+  },
+  "homepage": "https://stitch.withgoogle.com/",
+  "repository": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+  "license": "MIT",
+  "keywords": [
+    "stitch",
+    "mcp",
+    "design",
+    "google"
+  ],
+  "mcpServers": "./.mcp.local.json",
+  "interface": {
+    "displayName": "Stitch",
+    "shortDescription": "Connect Codex to the Stitch remote MCP server.",
+    "longDescription": "Adds the Stitch remote MCP server to Codex using the API-key authentication flow from Stitch documentation.",
+    "developerName": "Munir",
+    "category": "Design",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://stitch.withgoogle.com/",
+    "privacyPolicyURL": "https://policies.google.com/privacy",
+    "termsOfServiceURL": "https://policies.google.com/terms",
+    "defaultPrompt": [
+      "List my Stitch projects using MCP tools.",
+      "Generate a new Stitch screen from a product prompt.",
+      "Create design variants for the selected Stitch screens."
+    ],
+    "brandColor": "#1A73E8"
+  }
+}

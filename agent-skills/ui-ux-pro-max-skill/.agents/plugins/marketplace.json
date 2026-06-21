@@ -1,0 +1,32 @@
+{
+  "name": "ui-ux-pro-max-local",
+  "interface": {
+    "displayName": "UI UX Pro Max Local"
+  },
+  "plugins": [
+    {
+      "name": "pro",
+      "source": {
+        "source": "local",
+        "path": "./plugins/pro"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "stitch",
+      "source": {
+        "source": "local",
+        "path": "./plugins/stitch"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

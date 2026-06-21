@@ -1,0 +1,45 @@
+{
+  "name": "pro",
+  "version": "2.5.0",
+  "description": "Codex plugin wrapper for UI UX Pro Max design intelligence.",
+  "author": {
+    "name": "nextlevelbuilder",
+    "email": "[TODO: author@example.com]",
+    "url": "https://github.com/nextlevelbuilder"
+  },
+  "homepage": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+  "repository": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+  "license": "MIT",
+  "keywords": [
+    "ui",
+    "ux",
+    "design",
+    "styles",
+    "typography",
+    "color-palette",
+    "accessibility",
+    "charts",
+    "components"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Pro",
+    "shortDescription": "Professional UI and UX design intelligence for Codex.",
+    "longDescription": "Adds UI UX Pro Max skills to Codex with guidance for styles, typography, palettes, components, layouts, and design-system decisions.",
+    "developerName": "nextlevelbuilder",
+    "category": "Design",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+    "privacyPolicyURL": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+    "termsOfServiceURL": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+    "defaultPrompt": [
+      "Design a polished landing page with a strong visual direction and responsive layout.",
+      "Recommend a design system for my app with typography, colors, and component rules.",
+      "Review this UI for accessibility, spacing, hierarchy, and interaction quality."
+    ],
+    "brandColor": "#2563EB"
+  }
+}
