@@ -1,0 +1,40 @@
+name: Deploy to Cloudflare
+
+# Push -> auto-deploy. Every push to main redeploys the Worker (agent)
+# and the Pages site (skills.shegerpay.com). The Cloudflare API token is
+# read from the encrypted repo secret CLOUDFLARE_API_TOKEN — never hardcoded.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-worker:
+    name: Deploy Worker (claude-skill-agent)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: worker
+          command: deploy
+
+  deploy-pages:
+    name: Deploy Pages (claude-skill)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy Pages
+        uses: cloudflare/wrangler-action@v3
+        env:
+          CLOUDFLARE_ACCOUNT_ID: b18869a0dec6b679f4aac5e1e79b6fb8
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: pages deploy website --project-name=claude-skill --branch=main --commit-dirty=true

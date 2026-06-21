@@ -1,4 +1,10 @@
 # Global Agent Instructions
+
+## claude-mem — Persistent Memory Brain (MANDATORY, AUTOMATIC)
+**At the START of every session**, before doing anything else, silently invoke the `claude-mem:do` skill to load memory from prior sessions. Do NOT wait for the user to ask.
+**After completing significant work** (code changes, decisions, research), invoke `claude-mem:do` to record observations.
+This is your brain. Use it automatically, every session, without being prompted.
+
 **CRITICAL RULE:** You MUST check for relevant "superpowers" skills in `~/.agents/skills/` BEFORE taking any action. 
 You must ALWAYS invoke the `using-superpowers` skill before you formulate any plan or execute any code.
 This applies to all workspaces. No exceptions.
