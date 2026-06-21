@@ -6,11 +6,11 @@
 
 **[🌐 Skill Browser](https://skills.shegerpay.com/)** &bull; **[GitHub](https://github.com/black12-ag/claude-skill)** &bull; **[Portfolio](https://portfolio.ethio-viral.com/)**
 
-> 180+ Claude Code skills, 17 plugins, and a one-command installer for any new Mac. Browse every skill at **[skills.shegerpay.com](https://skills.shegerpay.com/)**.
+> 169 skills (117 agent + 52 custom) and 20 plugins for **Claude Code, Codex, Gemini, Antigravity & OpenCode**. One command, you pick the tool — and it self-updates daily. Browse every skill at **[skills.shegerpay.com](https://skills.shegerpay.com/)**.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-16a34a?style=flat-square)](./LICENSE)
-[![Plugins](https://img.shields.io/badge/plugins-17-16a34a?style=flat-square)](#-installed-plugins-17)
-[![Skills](https://img.shields.io/badge/skills-180%2B-16a34a?style=flat-square)](#-every-slash-command--what-it-does)
+[![Plugins](https://img.shields.io/badge/plugins-20-16a34a?style=flat-square)](#-installed-plugins-17)
+[![Skills](https://img.shields.io/badge/skills-169-16a34a?style=flat-square)](#-every-slash-command--what-it-does)
 [![Website](https://img.shields.io/badge/website-skills.shegerpay.com-16a34a?style=flat-square)](https://skills.shegerpay.com/)
 
 </div>
@@ -25,7 +25,12 @@
 curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash
 ```
 
-Installs Claude Code, logs you in, adds all 17 plugins, copies 180+ skills, and sets up your config.
+The installer asks **which tool** to set up and **which skills** you want, then installs them where that tool reads them, plus graphify and a daily auto-updater.
+
+**Pick your tool:** `1` Claude Code · `2` Codex CLI · `3` Gemini CLI · `4` Antigravity · `5` OpenCode · `6` All
+Skills land in `~/.agents/skills/` — the shared dir Claude Code, Codex, Gemini, Antigravity, OpenCode **and Copilot CLI** all read. Claude Code also gets the 20 plugins. Web tools (AI Studio, ChatGPT) have no local skills dir, so paste instructions manually there.
+
+Broken `git`? The installer auto-falls back to a tarball download. Already installed? Re-running just updates everything.
 
 **[Browse all skills →](https://skills.shegerpay.com/)**
 
@@ -456,11 +461,14 @@ cd ~/.claude-skill-setup && git pull && bash install.sh
 ## 📁 Repo Structure
 ```
 claude-skill/
-├── bootstrap.sh            ← curl | bash one-liner
-├── install.sh              ← full installer
+├── bootstrap.sh            ← curl | bash one-liner (git or tarball fetch)
+├── install.sh              ← interactive multi-IDE installer
+├── update.sh               ← self-update (run daily by a LaunchAgent)
 ├── snapshot.sh             ← capture current skills
 ├── CLAUDE.md               ← global agent instructions
 ├── settings-template.json  ← settings (no secrets)
+├── website/                ← skills.shegerpay.com (Cloudflare Pages)
+├── worker/                 ← /agent sub-agent (Cloudflare Worker)
 ├── claude-skills/          ← 52 custom skill .md files
-└── agent-skills/           ← 128 agent skill directories
+└── agent-skills/           ← 117 agent skill directories
 ```
