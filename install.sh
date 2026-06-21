@@ -59,13 +59,17 @@ fi
 # ── Step 2: Add Marketplaces ──────────────────────────────────
 header "Step 2: Marketplaces"
 
+# Marketplace name is taken from each repo's .claude-plugin/marketplace.json
+# ("name" field) — the CLI has no --name flag. The $name arg below must match
+# that manifest name so the "already added" check works and plugin@marketplace
+# references resolve.
 add_marketplace() {
   local name="$1" repo="$2"
-  if claude plugins marketplace list 2>/dev/null | grep -q "^$name"; then
+  if claude plugin marketplace list 2>/dev/null | grep -q "$name"; then
     warn "Marketplace '$name' already added, skipping"
   else
     info "  Adding: $name ($repo)"
-    claude plugins marketplace add "github:$repo" --name "$name" 2>/dev/null \
+    claude plugin marketplace add "$repo" 2>/dev/null \
       || warn "  Could not add $name (may need manual add)"
   fi
 }
@@ -75,23 +79,23 @@ add_marketplace "superpowers-dev" "obra/superpowers"
 add_marketplace "career-ops"      "santifer/career-ops"
 add_marketplace "cwb-plugins"     "Code-with-Beto/skills"
 add_marketplace "impeccable"      "pbakaus/impeccable"
-add_marketplace "taste-skills"    "Leonxlnx/taste-skill"
+add_marketplace "taste-skill"     "Leonxlnx/taste-skill"
 add_marketplace "ruflo"           "ruvnet/ruflo"
 
 info "Updating all marketplace indexes..."
-claude plugins marketplace update 2>/dev/null || warn "Marketplace update had issues (continuing)"
+claude plugin marketplace update 2>/dev/null || warn "Marketplace update had issues (continuing)"
 
 # ── Step 3: Install Plugins ───────────────────────────────────
-header "Step 3: Plugins (17 total)"
+header "Step 3: Plugins (20 total)"
 
 install_plugin() {
   local plugin="$1"
-  if claude plugins list 2>/dev/null | grep -q "${plugin%%@*}"; then
+  if claude plugin list 2>/dev/null | grep -q "${plugin%%@*}"; then
     warn "  Already installed: $plugin"
   else
     info "  Installing: $plugin"
-    claude plugins install "$plugin" --yes 2>/dev/null \
-      || warn "  Failed: $plugin (try: claude plugins install $plugin)"
+    claude plugin install "$plugin" 2>/dev/null \
+      || warn "  Failed: $plugin (try: claude plugin install $plugin)"
   fi
 }
 
@@ -107,14 +111,17 @@ install_plugin "playground@claude-plugins-official"
 install_plugin "claude-code-setup@claude-plugins-official"
 install_plugin "coderabbit@claude-plugins-official"
 install_plugin "swift-lsp@claude-plugins-official"
-install_plugin "Notion@claude-plugins-official"
+install_plugin "vercel@claude-plugins-official"
 
 # 3rd-party plugins
 install_plugin "claude-mem@thedotmack"
 install_plugin "superpowers@superpowers-dev"
 install_plugin "impeccable@impeccable"
-install_plugin "ts@taste-skills"
-install_plugin "50@ruflo"
+install_plugin "taste-skill@taste-skill"
+install_plugin "ruflo-core@ruflo"
+install_plugin "ruflo-goals@ruflo"
+install_plugin "ruflo-sparc@ruflo"
+install_plugin "ruflo-swarm@ruflo"
 
 # ── Step 4: Copy Custom Skill Files ──────────────────────────
 header "Step 4: Custom Skills"
