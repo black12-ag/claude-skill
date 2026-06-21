@@ -391,7 +391,7 @@
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-badge"><span class="badge-dot" aria-hidden="true"></span>v1.0 · 20 plugins · 169 skills · all editors</div>
   <h1 class="hero-title">Every Claude Code skill.<br><em>One command.</em></h1>
-  <p class="hero-sub">Install 20 plugins, 117 agent skills, and 52 custom skills. Works with Claude Code, Codex, Gemini, and Antigravity.</p>
+  <p class="hero-sub">Install 20 plugins, 117 agent skills, and 52 custom skills. Works with Claude Code, Codex, Gemini, Antigravity, and OpenCode.</p>
   <div class="install-box" role="group" aria-label="Install command">
     <span class="install-prompt" aria-hidden="true">$</span>
     <code class="install-cmd" id="cmd-text">curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</code>
@@ -425,6 +425,10 @@
     <span class="plat-badge">
       <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM8 4v4l3 2"/></svg>
       Antigravity
+    </span>
+    <span class="plat-badge">
+      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4l-3 4 3 4M12 4l3 4-3 4M9 2l-2 12"/></svg>
+      OpenCode
     </span>
   </div>
 </section>
@@ -472,6 +476,7 @@
       <button type="button" class="plat-tab" onclick="showPlat('codex',this)" role="tab" aria-selected="false">Codex CLI</button>
       <button type="button" class="plat-tab" onclick="showPlat('gemini',this)" role="tab" aria-selected="false">Gemini CLI</button>
       <button type="button" class="plat-tab" onclick="showPlat('antigravity',this)" role="tab" aria-selected="false">Antigravity</button>
+      <button type="button" class="plat-tab" onclick="showPlat('opencode',this)" role="tab" aria-selected="false">OpenCode</button>
     </div>
 
     <div id="plat-cli" class="plat-content active" data-anim>
@@ -524,6 +529,19 @@
         <span class="c-yellow">agy</span>  <span class="c-dim"># every skill available in the agent</span>
       </div>
       <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Antigravity loads each skill's SKILL.md from the shared ~/.agents/skills/ directory.</p>
+    </div>
+
+    <div id="plat-opencode" class="plat-content" data-anim>
+      <div class="code-block" data-cmd="curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash">
+        <button type="button" class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
+        <span class="c-dim"># 1. Install OpenCode (opencode.ai)</span><br>
+        <span class="c-green">curl</span> <span class="c-white">-fsSL https://opencode.ai/install | bash</span><br><br>
+        <span class="c-dim"># 2. Run the installer and choose "OpenCode"</span><br>
+        <span class="c-green">curl</span> <span class="c-white">-fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</span><br><br>
+        <span class="c-dim"># 3. OpenCode reads skills from ~/.agents/skills</span><br>
+        <span class="c-yellow">opencode</span>  <span class="c-dim"># skills auto-discovered as tools</span>
+      </div>
+      <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>OpenCode natively reads SKILL.md from ~/.agents/skills/ and ~/.claude/skills/, and uses ~/.config/opencode/AGENTS.md for instructions.</p>
     </div>
   </div>
 </section>
@@ -611,7 +629,7 @@
   <div class="container">
     <p data-anim class="section-label">Get started now</p>
     <h2 data-anim class="section-title">One command. Every skill.</h2>
-    <p data-anim class="section-sub">Works on Claude Code, Codex, Gemini CLI &amp; Antigravity.</p>
+    <p data-anim class="section-sub">Works on Claude Code, Codex, Gemini CLI, Antigravity &amp; OpenCode.</p>
     <div class="cta-btns" data-anim>
       <a href="https://github.com/black12-ag/claude-skill" class="cta-light" target="_blank" rel="noopener">View on GitHub</a>
       <a href="https://portfolio.ethio-viral.com/" class="cta-outline" target="_blank" rel="noopener">About the author</a>

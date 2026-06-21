@@ -35,36 +35,41 @@ echo -e "${NC}"
 det() { has "$1" && echo "on" || echo "off"; }
 D_CLAUDE=$(det claude); D_CODEX=$(det codex); D_GEMINI=$(det gemini)
 if has agy || [ -d "$HOME/.gemini/antigravity" ] || [ -d "$HOME/.antigravity" ]; then D_AGY="on"; else D_AGY="off"; fi
+if has opencode || [ -d "$HOME/.config/opencode" ] || [ -d "$HOME/.opencode" ]; then D_OC="on"; else D_OC="off"; fi
+ALL_TARGETS="claude codex gemini antigravity opencode"
 
 # ── Choose install targets (works under curl|bash via /dev/tty) ─
 header "Where should the skills go?"
-echo -e "  ${DIM}Detected:${NC}  Claude Code[$D_CLAUDE]  Codex[$D_CODEX]  Gemini CLI[$D_GEMINI]  Antigravity[$D_AGY]"
+echo -e "  ${DIM}Detected:${NC}  Claude[$D_CLAUDE]  Codex[$D_CODEX]  Gemini[$D_GEMINI]  Antigravity[$D_AGY]  OpenCode[$D_OC]"
 echo ""
 echo "    1) Claude Code   — plugins + skills + graphify + CLAUDE.md"
 echo "    2) Codex CLI     — skills + graphify + AGENTS.md"
 echo "    3) Gemini CLI    — skills + graphify + GEMINI.md"
 echo "    4) Antigravity   — skills + graphify"
-echo "    5) All of them   (recommended)"
+echo "    5) OpenCode      — skills + graphify + AGENTS.md"
+echo "    6) All of them   (recommended)"
+echo -e "    ${DIM}(skills land in ~/.agents/skills — also read by Copilot CLI & others)${NC}"
 echo ""
 
 CHOICE="${CLAUDE_SKILL_TARGETS:-}"
 if [ -z "$CHOICE" ] && [ -r /dev/tty ]; then
-  printf "  Pick one or more (e.g. \"1 3\") or 5 for all [5]: "
+  printf "  Pick one or more (e.g. \"1 5\") or 6 for all [6]: "
   read -r CHOICE < /dev/tty || CHOICE=""
 fi
-CHOICE="${CHOICE:-5}"
+CHOICE="${CHOICE:-6}"
 
 TARGETS=""
-if echo "$CHOICE" | grep -qiE '(^|[^0-9])5([^0-9]|$)|all'; then
-  TARGETS="claude codex gemini antigravity"
+if echo "$CHOICE" | grep -qiE '(^|[^0-9])6([^0-9]|$)|all'; then
+  TARGETS="$ALL_TARGETS"
 else
-  echo "$CHOICE" | grep -qiE '(^|[^0-9])1([^0-9]|$)|claude'      && TARGETS="$TARGETS claude"
-  echo "$CHOICE" | grep -qiE '(^|[^0-9])2([^0-9]|$)|codex'       && TARGETS="$TARGETS codex"
-  echo "$CHOICE" | grep -qiE '(^|[^0-9])3([^0-9]|$)|gemini'      && TARGETS="$TARGETS gemini"
-  echo "$CHOICE" | grep -qiE '(^|[^0-9])4([^0-9]|$)|antigravity|agy' && TARGETS="$TARGETS antigravity"
+  echo "$CHOICE" | grep -qiE '(^|[^0-9])1([^0-9]|$)|claude'           && TARGETS="$TARGETS claude"
+  echo "$CHOICE" | grep -qiE '(^|[^0-9])2([^0-9]|$)|codex'            && TARGETS="$TARGETS codex"
+  echo "$CHOICE" | grep -qiE '(^|[^0-9])3([^0-9]|$)|gemini'           && TARGETS="$TARGETS gemini"
+  echo "$CHOICE" | grep -qiE '(^|[^0-9])4([^0-9]|$)|antigravity|agy'  && TARGETS="$TARGETS antigravity"
+  echo "$CHOICE" | grep -qiE '(^|[^0-9])5([^0-9]|$)|opencode|oc'      && TARGETS="$TARGETS opencode"
 fi
 TARGETS="$(echo "$TARGETS" | xargs)"
-[ -z "$TARGETS" ] && TARGETS="claude codex gemini antigravity"
+[ -z "$TARGETS" ] && TARGETS="$ALL_TARGETS"
 info "Installing for: ${BOLD}$TARGETS${NC}"
 
 # ── Choose which skills/plugins (simple — default is everything) ─
@@ -210,6 +215,15 @@ install_antigravity() {
   install_graphify
 }
 
+# ── Target: OpenCode ──────────────────────────────────────────
+install_opencode() {
+  header "OpenCode"
+  has opencode || warn "opencode not detected — installing skills anyway (OpenCode reads ~/.agents/skills)"
+  sync_agent_skills            # OpenCode reads ~/.agents/skills/<name>/SKILL.md natively
+  write_instructions "$HOME/.config/opencode/AGENTS.md"
+  install_graphify
+}
+
 # ── Run chosen targets ────────────────────────────────────────
 for t in $TARGETS; do
   case "$t" in
@@ -217,6 +231,7 @@ for t in $TARGETS; do
     codex)       install_codex ;;
     gemini)      install_gemini ;;
     antigravity) install_antigravity ;;
+    opencode)    install_opencode ;;
   esac
 done
 
