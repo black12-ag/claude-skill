@@ -33,9 +33,15 @@ echo "════ Claude Skill Pack — self-update $(date '+%Y-%m-%d %H:%M') �
 # 1 ── Refresh the pack repo (latest bundled skills + this script) ──
 if [ -d "$SETUP_DIR/.git" ]; then
   info "Pulling latest pack..."
-  "$GIT" -C "$SETUP_DIR" pull --ff-only 2>/dev/null || warn "pack pull failed (keeping current copy)"
+  # ff-pull, else force-sync to origin (survives a dirty/diverged setup dir).
+  "$GIT" -C "$SETUP_DIR" pull --ff-only 2>/dev/null \
+    || { "$GIT" -C "$SETUP_DIR" fetch --depth 1 origin main 2>/dev/null \
+         && "$GIT" -C "$SETUP_DIR" reset --hard origin/main 2>/dev/null \
+         && info "force-synced to origin/main"; } \
+    || warn "pack update skipped (kept current copy)"
 else
   info "Cloning pack..."
+  rm -rf "$SETUP_DIR"
   "$GIT" clone --depth 1 "$REPO" "$SETUP_DIR" 2>/dev/null || warn "clone failed"
 fi
 
