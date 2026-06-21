@@ -96,8 +96,9 @@ install_graphify() {
   [ "$GRAPHIFY_DONE" = "1" ] && return; GRAPHIFY_DONE=1
   if has uv; then
     info "  Installing graphify (from git)..."
-    if uv tool install --force "graphifyy @ $GRAPHIFY_GIT" >/dev/null 2>&1; then
-      has graphify && graphify install >/dev/null 2>&1
+    # /usr/bin first so uv's git clone uses system git, not a broken shim git.
+    if PATH="/usr/bin:$HOME/.local/bin:$PATH" uv tool install --force "graphifyy @ $GRAPHIFY_GIT" >/dev/null 2>&1; then
+      has graphify && PATH="/usr/bin:$HOME/.local/bin:$PATH" graphify install >/dev/null 2>&1
       info "  graphify ready"
     else
       warn "  graphify install failed (continuing)"

@@ -391,13 +391,13 @@
   <div class="hero-glow" aria-hidden="true"></div>
   <div class="hero-badge"><span class="badge-dot" aria-hidden="true"></span>v1.0 · 20 plugins · 180 skills · all editors</div>
   <h1 class="hero-title">Every Claude Code skill.<br><em>One command.</em></h1>
-  <p class="hero-sub">Install 20 plugins, 128 agent skills, and 52 custom skills. Works with Claude Code, VS Code, Cursor, JetBrains, Codex, and the CLI.</p>
+  <p class="hero-sub">Install 20 plugins, 128 agent skills, and 52 custom skills. Works with Claude Code, Codex, Gemini, and Antigravity.</p>
   <div class="install-box" role="group" aria-label="Install command">
     <span class="install-prompt" aria-hidden="true">$</span>
     <code class="install-cmd" id="cmd-text">curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</code>
     <button type="button" class="copy-btn" id="copy-btn" onclick="copyCmd()">Copy</button>
   </div>
-  <p class="hero-note">macOS · Requires Claude Code + Node.js · <a href="https://skills.shegerpay.com/agent?q=install" style="color:var(--accent)">API</a></p>
+  <p class="hero-note">macOS · The installer asks which tool to set up · <a href="https://skills.shegerpay.com/agent?q=install" style="color:var(--accent)">API</a></p>
 
   <div class="hero-stats" aria-label="Stats">
     <span class="stat-item"><strong>20</strong> plugins</span>
@@ -409,22 +409,10 @@
     <span class="stat-item"><strong>8</strong> marketplaces</span>
   </div>
 
-  <div class="platforms-row" aria-label="Supported platforms">
+  <div class="platforms-row" aria-label="Supported tools">
     <span class="plat-badge">
       <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1" y="1" width="14" height="14" rx="2"/><path d="M5 8h6M8 5v6"/></svg>
-      Claude Code CLI
-    </span>
-    <span class="plat-badge">
-      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 3l5 5-5 5M8 13h7"/></svg>
-      VS Code
-    </span>
-    <span class="plat-badge">
-      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
-      Cursor
-    </span>
-    <span class="plat-badge">
-      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
-      JetBrains
+      Claude Code
     </span>
     <span class="plat-badge">
       <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="1"/><path d="M5 6l2 2-2 2M8 10h3"/></svg>
@@ -433,6 +421,10 @@
     <span class="plat-badge">
       <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 2l12 6-12 6V2z"/></svg>
       Gemini CLI
+    </span>
+    <span class="plat-badge">
+      <svg class="plat-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM8 4v4l3 2"/></svg>
+      Antigravity
     </span>
   </div>
 </section>
@@ -447,7 +439,7 @@
         <span class="step-num">01 / INSTALL</span>
         <div class="step-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
         <div class="step-title">Run one command</div>
-        <p class="step-desc">The bootstrap script clones the repo, adds all 7 community marketplaces, and installs all 20 plugins automatically on any Mac.</p>
+        <p class="step-desc">The installer asks which tool to set up, then installs the skills where that tool reads them. Pick Claude Code for the full 20-plugin setup, or Codex, Gemini, Antigravity.</p>
         <div class="step-code">curl -fsSL .../bootstrap.sh | bash</div>
       </div>
       <div class="step" data-anim>
@@ -473,15 +465,13 @@
   <div class="container">
     <p data-anim class="section-label">Platform Support</p>
     <h2 data-anim class="section-title">Works on every editor and CLI</h2>
-    <p data-anim class="section-sub">One install. Skills work across all Claude-powered tools automatically.</p>
+    <p data-anim class="section-sub">Pick your tool in the installer. Skills land where each one looks for them, automatically.</p>
 
     <div class="plat-tabs" data-anim role="tablist" aria-label="Platform install guides">
-      <button type="button" class="plat-tab active" onclick="showPlat('cli',this)" role="tab" aria-selected="true">Claude Code CLI</button>
-      <button type="button" class="plat-tab" onclick="showPlat('vscode',this)" role="tab" aria-selected="false">VS Code</button>
-      <button type="button" class="plat-tab" onclick="showPlat('cursor',this)" role="tab" aria-selected="false">Cursor</button>
-      <button type="button" class="plat-tab" onclick="showPlat('jetbrains',this)" role="tab" aria-selected="false">JetBrains</button>
+      <button type="button" class="plat-tab active" onclick="showPlat('cli',this)" role="tab" aria-selected="true">Claude Code</button>
       <button type="button" class="plat-tab" onclick="showPlat('codex',this)" role="tab" aria-selected="false">Codex CLI</button>
       <button type="button" class="plat-tab" onclick="showPlat('gemini',this)" role="tab" aria-selected="false">Gemini CLI</button>
+      <button type="button" class="plat-tab" onclick="showPlat('antigravity',this)" role="tab" aria-selected="false">Antigravity</button>
     </div>
 
     <div id="plat-cli" class="plat-content active" data-anim>
@@ -495,47 +485,6 @@
         <span class="c-yellow">/menu</span>   <span class="c-dim"># browse all 180 skills</span>
       </div>
       <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Skills are stored in ~/.agents/skills/ and ~/.claude/skills/ — shared across all Claude-powered apps automatically.</p>
-    </div>
-
-    <div id="plat-vscode" class="plat-content" data-anim>
-      <div class="code-block" data-cmd="curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash">
-        <button type="button" class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
-        <span class="c-dim"># 1. Install Claude Code extension in VS Code</span><br>
-        <span class="c-dim">#    Extensions tab &rarr; search "Claude Code" &rarr; Install</span><br><br>
-        <span class="c-dim"># 2. Run the skill installer in VS Code terminal</span><br>
-        <span class="c-green">curl</span> <span class="c-white">-fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</span><br><br>
-        <span class="c-dim"># 3. Open Claude panel &rarr; type / to see all skills</span><br>
-        <span class="c-yellow">/auto</span> <span class="c-white">fix this bug in my code</span>
-      </div>
-      <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>The Claude Code VS Code extension shares the same skill directory. Install once, works everywhere.</p>
-    </div>
-
-    <div id="plat-cursor" class="plat-content" data-anim>
-      <div class="code-block" data-cmd="curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash">
-        <button type="button" class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
-        <span class="c-dim"># 1. Enable Claude Code in Cursor settings</span><br>
-        <span class="c-dim">#    Settings &rarr; AI &rarr; Claude Code &rarr; Enable</span><br><br>
-        <span class="c-dim"># 2. Run installer in Cursor terminal</span><br>
-        <span class="c-green">curl</span> <span class="c-white">-fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</span><br><br>
-        <span class="c-dim"># 3. Open AI chat &rarr; type / for all commands</span><br>
-        <span class="c-yellow">ts:taste-skill</span>   <span class="c-dim"># design taste enforcement</span><br>
-        <span class="c-yellow">/impeccable audit</span> <span class="c-dim"># full UI audit</span>
-      </div>
-      <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Cursor supports Claude Code skills via the same ~/.agents/skills/ directory.</p>
-    </div>
-
-    <div id="plat-jetbrains" class="plat-content" data-anim>
-      <div class="code-block" data-cmd="curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash">
-        <button type="button" class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
-        <span class="c-dim"># 1. Install Claude Code plugin from JetBrains Marketplace</span><br>
-        <span class="c-dim">#    Preferences &rarr; Plugins &rarr; search "Claude Code"</span><br><br>
-        <span class="c-dim"># 2. Run installer in IDE terminal</span><br>
-        <span class="c-green">curl</span> <span class="c-white">-fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</span><br><br>
-        <span class="c-dim"># 3. Open Claude panel &rarr; use all skills</span><br>
-        <span class="c-yellow">superpowers:systematic-debugging</span><br>
-        <span class="c-yellow">coderabbit:code-review</span>
-      </div>
-      <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Works with IntelliJ IDEA, WebStorm, PyCharm, GoLand, and all JetBrains IDEs.</p>
     </div>
 
     <div id="plat-codex" class="plat-content" data-anim>
@@ -563,6 +512,18 @@
         <span class="c-yellow">activate_skill brainstorming</span>
       </div>
       <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Gemini CLI uses GEMINI.md files and reads skills from the shared ~/.agents/skills/ directory.</p>
+    </div>
+
+    <div id="plat-antigravity" class="plat-content" data-anim>
+      <div class="code-block" data-cmd="curl -fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash">
+        <button type="button" class="copy-code-btn" onclick="copyBlock(this)">Copy</button>
+        <span class="c-dim"># 1. Install Antigravity (Google) from antigravity.google</span><br>
+        <span class="c-dim"># 2. Run the installer and choose "Antigravity"</span><br>
+        <span class="c-green">curl</span> <span class="c-white">-fsSL https://raw.githubusercontent.com/black12-ag/claude-skill/main/bootstrap.sh | bash</span><br><br>
+        <span class="c-dim"># 3. Antigravity surfaces skills at session start</span><br>
+        <span class="c-yellow">agy</span>  <span class="c-dim"># every skill available in the agent</span>
+      </div>
+      <p class="plat-note"><span class="plat-note-icon" aria-hidden="true"><svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="1 6 4 9 11 2"/></svg></span>Antigravity loads each skill's SKILL.md from the shared ~/.agents/skills/ directory.</p>
     </div>
   </div>
 </section>
@@ -650,7 +611,7 @@
   <div class="container">
     <p data-anim class="section-label">Get started now</p>
     <h2 data-anim class="section-title">One command. Every skill.</h2>
-    <p data-anim class="section-sub">Works on Claude Code, VS Code, Cursor, JetBrains, Codex &amp; Gemini CLI.</p>
+    <p data-anim class="section-sub">Works on Claude Code, Codex, Gemini CLI &amp; Antigravity.</p>
     <div class="cta-btns" data-anim>
       <a href="https://github.com/black12-ag/claude-skill" class="cta-light" target="_blank" rel="noopener">View on GitHub</a>
       <a href="https://portfolio.ethio-viral.com/" class="cta-outline" target="_blank" rel="noopener">About the author</a>
